@@ -1,0 +1,7 @@
+directives:
+# Add the table, and weld the table-top center frame to the world.
+- add_model:
+    name: manipuland_table
+    file: package://lbm_eval_models/stations/franka_station/station_natural_brown_table_top_compliant.sdf
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/add_table_top_weld.dmd.yaml

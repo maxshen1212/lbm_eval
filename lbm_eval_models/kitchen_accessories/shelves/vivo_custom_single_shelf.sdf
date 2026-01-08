@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="vivo_custom_single_shelf">
+    <link name="vivo_custom_single_shelf">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 -0.00636 0.137 0 0 0</pose>
+        <mass>3.3</mass>
+        <inertia>
+          <ixx> 0.120</ixx>
+          <ixy> 0.000</ixy>
+          <ixz> 0.000</ixz>
+          <iyy> 0.177</iyy>
+          <iyz> 0.012</iyz>
+          <izz> 0.090</izz>
+        </inertia>
+      </inertial>
+      <visual name="vivo_custom_single_shelf">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/kitchen_accessories/shelves/assets/vivo_custom_single_shelf.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="vivo_custom_single_shelf_base">
+        <pose>0.0 0.004 0.0095 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.567 0.264 0.019</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+      <collision name="vivo_custom_single_shelf_base_mid_bracket">
+        <pose>-0.0 0.058 0.02902 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.378 0.02 0.02004</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+      <collision name="vivo_custom_single_shelf_base_right_bracket">
+        <pose>0.179 0.004 0.02902 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.088 0.02004</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+      <collision name="vivo_custom_single_shelf_left_leg">
+        <pose>-0.179 0.038 0.304 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.02 0.17</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+      <collision name="vivo_custom_single_shelf_right_leg">
+        <pose>0.179 0.038 0.214 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.02 0.02 0.35</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+      <collision name="vivo_custom_single_shelf_top">
+        <pose>-0.0 -0.044 0.399 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.378 0.184 0.02</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+      <collision name="side_stop_collision">
+        <!-- 0.166 (where the shelf blackstop starts) + collision thickness / 2 -->
+        <pose>-0.1775 -0.022 0.119 0 0 0</pose>
+        <geometry>
+          <box>
+            <!-- Note that this is thicker than the visual geometry to ensure
+                 that it doesn't have pass through issues. -->
+            <size>0.023 0.14 0.2</size>
+          </box>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+
+    </link>
+    <frame name="origin">
+      <pose relative_to="vivo_custom_single_shelf">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="plywood_bottom_center__z_up">
+      <pose relative_to="vivo_custom_single_shelf">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="plywood_top_center__z_up">
+      <pose relative_to="vivo_custom_single_shelf">0 0 0.019 0 0 0</pose>
+    </frame>
+    <frame name="shelf_top_center__z_up">
+      <pose relative_to="vivo_custom_single_shelf">0 -0.0436 0.409 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

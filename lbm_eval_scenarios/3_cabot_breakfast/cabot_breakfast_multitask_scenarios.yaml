@@ -1,0 +1,1585 @@
+_lcm_buses_options:
+  # Define LCM Buses. Set all buses to memq://null (except visualizer_bus)
+  # to enable single-process simulation with Meldis visualization server.
+  - &VisualizerLcmBusOnly
+    left:
+      lcm_url: memq://null
+    right:
+      lcm_url: memq://null
+    camera:
+      lcm_url: memq://null
+    default:
+      lcm_url: memq://null
+    visualizer_bus: {}
+
+  # Define LCM Buses. Set all buses to memq://null (except visualizer_bus
+  # and camera) to enable single-process simulation with Meldis visualization
+  # server.
+  - &VisualizerCameraLcmBusOnly
+    left:
+      lcm_url: memq://null
+    right:
+      lcm_url: memq://null
+    camera:
+      lcm_url: udpm://239.255.2.1:6776?ttl=0
+    default:
+      lcm_url: memq://null
+    visualizer_bus: {}
+
+  # Define LCM Buses. Set all buses to memq://null (including visualizer_bus)
+  # to enable single-process simulation with Meshcat visualization only.
+  - &VisualizerLocalOnly
+    left:
+      lcm_url: memq://null
+    right:
+      lcm_url: memq://null
+    camera:
+      lcm_url: memq://null
+    default:
+      lcm_url: memq://null
+    visualizer_bus:
+      lcm_url: memq://null
+
+# List of directives that can be used to compose a scene.
+_directives:
+  # The robot and table.
+  - &RobotAndTable
+    add_directives:
+      file: package://lbm_eval_models/stations/cabot/add_cabot_simulation.dmd.yaml
+  # Objects for "OneOfEverything" - not to be used for production scenarios.
+  - &ExampleBanana
+    add_model:
+      file: package://lbm_eval_models/groceries/bananas/fake_ripe_banana.sdf
+      name: banana
+      default_free_body_pose:
+        fake_banana:
+          base_frame: manipuland_table::station_table_top
+          translation: [0.2, 0.4, 0.05]
+          rotation: !Rpy
+            deg: [90, 0, 0]
+  - &ExampleOrange
+    add_model:
+      file: package://lbm_eval_models/groceries/oranges/fake_ripe_ycb_orange.sdf
+      name: orange
+      default_free_body_pose:
+        fake_ycb_orange:
+          base_frame: manipuland_table::station_table_top
+          translation: [0.1, 0.4, 0.05]
+  - &ExampleApple
+    add_model:
+      file: package://lbm_eval_models/groceries/apples/fake_green_sweet_crispin_apple.sdf
+      name: apple
+      default_free_body_pose:
+        fake_sweet_crispin_apple:
+          base_frame: manipuland_table::station_table_top
+          translation: [0.0, 0.4, 0.05]
+  - &ExampleKiwi
+    add_model:
+      file: package://lbm_eval_models/groceries/berries/fake_ripe_kiwi.sdf
+      name: kiwi
+      default_free_body_pose:
+        fake_kiwi:
+          base_frame: manipuland_table::station_table_top
+          translation: [-0.1, 0.4, 0.05]
+  - &ExampleMug
+    add_model:
+      file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+      name: mug
+      default_free_body_pose:
+        mug_bottom_center__z_up:
+          base_frame: manipuland_table::station_table_top
+          translation: [-0.2, 0.4, 0.05]
+          rotation: !Rpy
+            deg: [0, 0, 90]
+  - &ExampleCup
+    add_model:
+      file: package://lbm_eval_models/tableware/tumblers/tumbler_8oz_tropical_pink.sdf
+      name: cup
+      default_free_body_pose:
+        tumbler_8oz:
+          base_frame: manipuland_table::station_table_top
+          translation: [0.1, 0.2, 0]
+  - &ExampleCoaster
+    add_model:
+      file: package://lbm_eval_models/tableware/coasters/coaster_double_wood_cylinder_collision.sdf
+      name: coaster
+      default_free_body_pose:
+        coaster_double:
+          base_frame: manipuland_table::station_table_top
+          translation: [0.2, 0.2, 0.0]
+  - &ExampleSaucer
+    add_model:
+      file: package://lbm_eval_models/tableware/plates/carlisle_plate_light_blue.sdf
+      name: saucer
+      default_free_body_pose:
+        flush_bottom_center__z_up:
+          base_frame: manipuland_table::station_table_top
+          translation: [0.1, 0.0, 0.0]
+  - &ExampleCerealBox
+    add_model:
+      file: package://lbm_eval_models/groceries/cereals/drake_flakes_cereal_box.sdf
+      name: cereal_box
+  - &ExampleCerealBoxWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: cereal_box::at_rest_right_side_up
+      X_PC:
+        translation: [0.15, 0.6, 0]
+  - &ExampleBowl
+    add_model:
+      file: package://lbm_eval_models/tableware/bowls/evo_bowl_white.sdf
+      name: bowl
+  - &ExampleBowlWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: bowl::at_rest_right_side_up
+      X_PC:
+        translation: [0.15, -0.6, 0.0]
+  - &ExampleSpatula
+    add_model:
+      file: package://lbm_eval_models/tableware/spatulas/thimma_wood_natural_flat_spatula.sdf
+      name: spatula
+  - &ExampleSpatulaWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: spatula::at_rest_right_side_up
+      X_PC:
+        translation: [-0.15, 0.6, 0]
+  - &ExampleServingSpoon
+    add_model:
+      file: package://lbm_eval_models/tableware/spoons/spoon_oxo_steel.sdf
+      name: serving_spoon
+  - &ExampleServingSpoonWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: serving_spoon::at_rest_right_side_up
+      X_PC:
+        translation: [-0.15, -0.6, 0]
+  - &ExampleKnife
+    add_model:
+      file: package://lbm_eval_models/tableware/knives/cambridge_jubilee_stainless_plastic_blue_knife.sdf
+      name: knife
+  - &ExampleKnifeWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: knife::at_rest_right_side_up
+      X_PC:
+        translation: [0.2, -0.4, 0]
+        rotation: !Rpy
+          deg: [0, 0, 90]
+  - &ExampleFork
+    add_model:
+      file: package://lbm_eval_models/tableware/forks/cambridge_jubilee_stainless_plastic_blue_fork.sdf
+      name: fork
+  - &ExampleForkWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: fork::at_rest_right_side_up
+      X_PC:
+        translation: [0.1, -0.4, 0]
+        rotation: !Rpy
+          deg: [0, 0, 90]
+  - &ExampleTeaspoon
+    add_model:
+      file: package://lbm_eval_models/tableware/spoons/cambridge_jubilee_stainless_plastic_blue_teaspoon.sdf
+      name: teaspoon
+  - &ExampleTeaspoonWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: teaspoon::at_rest_right_side_up
+      X_PC:
+        translation: [0.0, -0.4, 0.0]
+        rotation: !Rpy
+          deg: [0, 0, 90]
+  - &ExampleDinnerSpoon
+    add_model:
+      file: package://lbm_eval_models/tableware/spoons/cambridge_jubilee_stainless_plastic_blue_dinner_spoon.sdf
+      name: dinner_spoon
+  - &ExampleDinnerSpoonWeld
+    add_weld:
+      parent: manipuland_table::station_table_top
+      child: dinner_spoon::at_rest_right_side_up
+      X_PC:
+        translation: [-0.1, -0.4, 0]
+        rotation: !Rpy
+          deg: [0, 0, 90]
+  # Welded distractor directives.
+  - &Distractor0Frame0
+    add_frame:
+      name: distractor_0_region_0
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: !UniformVector
+          min: [-0.3, -0.5, 0.0]
+          max: [-0.2, -0.2, 0.0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, -180]
+            max: [0, 0, 180]
+  - &Distractor0Frame1
+    add_frame:
+      name: distractor_0_region_1
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: !UniformVector
+          min: [-0.3, -0.6, 0.0]
+          max: [ 0.2, -0.5, 0.0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, -180]
+            max: [0, 0, 180]
+  - &Distractor0Frame2
+    add_frame:
+      name: distractor_0_region_2
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: !UniformVector
+          min: [0.2, -0.6, 0.0]
+          max: [0.3, -0.1, 0.0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, -180]
+            max: [0, 0, 180]
+  - &Distractor0
+    !SampleNumCopiesAndFlatten
+    num_copies: !UniformDiscrete
+      values: [0, 1]
+    elements:
+      - add_model:
+          file: !UniformDiscreteString
+            values: &DistractorsList
+              - package://lbm_eval_models/groceries/cereals/drake_flakes_cereal_box.sdf
+              - package://lbm_eval_models/tableware/bowls/evo_bowl_white.sdf
+              - package://lbm_eval_models/tableware/spatulas/thimma_wood_natural_flat_spatula.sdf
+              - package://lbm_eval_models/tableware/spoons/spoon_oxo_steel.sdf
+              - package://lbm_eval_models/tableware/knives/cambridge_jubilee_stainless_plastic_blue_knife.sdf
+              - package://lbm_eval_models/tableware/forks/cambridge_jubilee_stainless_plastic_blue_fork.sdf
+              - package://lbm_eval_models/tableware/spoons/cambridge_jubilee_stainless_plastic_blue_teaspoon.sdf
+              - package://lbm_eval_models/tableware/spoons/cambridge_jubilee_stainless_plastic_blue_dinner_spoon.sdf
+          name: distractor_0
+      - add_weld:
+          parent: !UniformDiscreteString
+            values:
+              - distractor_0_region_0
+              - distractor_0_region_1
+              - distractor_0_region_2
+          child: distractor_0::at_rest_right_side_up
+  - &Distractor1Frame0
+    add_frame:
+      name: distractor_1_region_0
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: !UniformVector
+          min: [-0.3, 0.2, 0.0]
+          max: [-0.2, 0.5, 0.0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, -180]
+            max: [0, 0, 180]
+  - &Distractor1Frame1
+    add_frame:
+      name: distractor_1_region_1
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: !UniformVector
+          min: [-0.3, 0.5, 0.0]
+          max: [ 0.2, 0.6, 0.0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, -180]
+            max: [0, 0, 180]
+  - &Distractor1Frame2
+    add_frame:
+      name: distractor_1_region_2
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: !UniformVector
+          min: [0.2, 0.1, 0.0]
+          max: [0.3, 0.6, 0.0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, -180]
+            max: [0, 0, 180]
+  - &Distractor1
+    !SampleNumCopiesAndFlatten
+    num_copies: !UniformDiscrete
+      values: [0, 1]
+    elements:
+      - add_model:
+          file: !UniformDiscreteString
+            values: *DistractorsList
+          name: distractor_1
+      - add_weld:
+          parent: !UniformDiscreteString
+            values:
+              - distractor_1_region_0
+              - distractor_1_region_1
+              - distractor_1_region_2
+          child: distractor_1::at_rest_right_side_up
+  # Randomized fruit.
+  - &RandomFruitMugCupFrame0
+    add_frame:
+      name: fruit_mug_cup_region_0
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: [-0.05, -0.3, 0]
+  - &RandomFruitMugCupFrame1
+    add_frame:
+      name: fruit_mug_cup_region_1
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: [-0.05, -0.1, 0]
+  - &RandomFruitMugCupFrame2
+    add_frame:
+      name: fruit_mug_cup_region_2
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: [-0.05, 0.1, 0]
+  - &RandomFruitMugCupFrame3
+    add_frame:
+      name: fruit_mug_cup_region_3
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: [-0.05, 0.4, 0]
+  - &RandomFruitSelection
+    num_copies: !UniformDiscrete
+      values: [3, 4]
+    add_model: !UniformManipuland
+      name: fruit
+      values:
+        - file: package://lbm_eval_models/groceries/bananas/fake_ripe_banana.sdf
+          default_free_body_pose:
+            fake_banana:
+              base_frame: &RandomFruitMugCupBaseFrame !UniformDiscreteString
+                values:
+                  - fruit_mug_cup_region_0
+                  - fruit_mug_cup_region_1
+                  - fruit_mug_cup_region_2
+                  - fruit_mug_cup_region_3
+              translation: &RandomBananaTranslation !UniformVector
+                min: [-0.25, -0.1, 0.019]
+                max: [ 0.25,  0.1, 0.019]
+              rotation: &RandomBananaKiwiRotation !Rpy
+                deg:
+                  # Rotate the banana so that the long dimension is parallel to
+                  # the table.
+                  - !UniformDiscrete {values: [90, -90]}
+                  - 0
+                  # Rotate around z by any amount.
+                  - !Uniform {min: -180, max:  180}
+        - file: package://lbm_eval_models/groceries/oranges/fake_ripe_ycb_orange.sdf
+          default_free_body_pose:
+            fake_ycb_orange:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: &RandomOrangeTranslation !UniformVector
+                min: [-0.25, -0.1, 0.038]
+                max: [ 0.25,  0.1, 0.038]
+              # TODO(#11698) Replace this with !Uniform.
+              rotation: &RandomUniformRotation !Rpy
+                deg: !UniformVector
+                  min: [-180, -180, -180]
+                  max: [180, 180, 180]
+        - file: package://lbm_eval_models/groceries/apples/fake_green_sweet_crispin_apple.sdf
+          default_free_body_pose:
+            fake_sweet_crispin_apple:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: &RandomAppleTranslation !UniformVector
+                min: [-0.25, -0.1, 0.037]
+                max: [ 0.25,  0.1, 0.037]
+              rotation: *RandomUniformRotation
+        - file: package://lbm_eval_models/groceries/berries/fake_ripe_kiwi.sdf
+          default_free_body_pose:
+            fake_kiwi:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: &RandomKiwiTranslation !UniformVector
+                min: [-0.25, -0.1, 0.027]
+                max: [ 0.25,  0.1, 0.027]
+              rotation: *RandomBananaKiwiRotation
+  - &RandomFruitSelectionNoBanana
+    num_copies: !UniformDiscrete
+      values: [2, 3]
+    add_model: !UniformManipuland
+      name: fruit
+      values:
+        - file: package://lbm_eval_models/groceries/oranges/fake_ripe_ycb_orange.sdf
+          default_free_body_pose:
+            fake_ycb_orange:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomOrangeTranslation
+              rotation: *RandomUniformRotation
+        - file: package://lbm_eval_models/groceries/apples/fake_green_sweet_crispin_apple.sdf
+          default_free_body_pose:
+            fake_sweet_crispin_apple:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomAppleTranslation
+              rotation: *RandomUniformRotation
+        - file: package://lbm_eval_models/groceries/berries/fake_ripe_kiwi.sdf
+          default_free_body_pose:
+            fake_kiwi:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomKiwiTranslation
+              rotation: *RandomBananaKiwiRotation
+  - &RandomFruitSelectionNoOrange
+    num_copies: !UniformDiscrete
+      values: [2, 3]
+    add_model: !UniformManipuland
+      name: fruit
+      values:
+        - file: package://lbm_eval_models/groceries/bananas/fake_ripe_banana.sdf
+          default_free_body_pose:
+            fake_banana:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomBananaTranslation
+              rotation: *RandomBananaKiwiRotation
+        - file: package://lbm_eval_models/groceries/apples/fake_green_sweet_crispin_apple.sdf
+          default_free_body_pose:
+            fake_sweet_crispin_apple:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomAppleTranslation
+              rotation: *RandomUniformRotation
+        - file: package://lbm_eval_models/groceries/berries/fake_ripe_kiwi.sdf
+          default_free_body_pose:
+            fake_kiwi:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomKiwiTranslation
+              rotation: *RandomBananaKiwiRotation
+  - &RandomFruitSelectionNoApple
+    num_copies: !UniformDiscrete
+      values: [2, 3]
+    add_model: !UniformManipuland
+      name: fruit
+      values:
+        - file: package://lbm_eval_models/groceries/bananas/fake_ripe_banana.sdf
+          default_free_body_pose:
+            fake_banana:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomBananaTranslation
+              rotation: *RandomBananaKiwiRotation
+        - file: package://lbm_eval_models/groceries/oranges/fake_ripe_ycb_orange.sdf
+          default_free_body_pose:
+            fake_ycb_orange:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomOrangeTranslation
+              rotation: *RandomUniformRotation
+        - file: package://lbm_eval_models/groceries/berries/fake_ripe_kiwi.sdf
+          default_free_body_pose:
+            fake_kiwi:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomKiwiTranslation
+              rotation: *RandomBananaKiwiRotation
+  - &RandomFruitSelectionNoKiwi
+    num_copies: !UniformDiscrete
+      values: [2, 3]
+    add_model: !UniformManipuland
+      name: fruit
+      values:
+        - file: package://lbm_eval_models/groceries/bananas/fake_ripe_banana.sdf
+          default_free_body_pose:
+            fake_banana:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomBananaTranslation
+              rotation: *RandomBananaKiwiRotation
+        - file: package://lbm_eval_models/groceries/oranges/fake_ripe_ycb_orange.sdf
+          default_free_body_pose:
+            fake_ycb_orange:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomOrangeTranslation
+              rotation: *RandomUniformRotation
+        - file: package://lbm_eval_models/groceries/apples/fake_green_sweet_crispin_apple.sdf
+          default_free_body_pose:
+            fake_sweet_crispin_apple:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomAppleTranslation
+              rotation: *RandomUniformRotation
+  # Specific fruit.
+  - &RandomBanana
+    add_model:
+      file: package://lbm_eval_models/groceries/bananas/fake_ripe_banana.sdf
+      name: banana
+      default_free_body_pose:
+        fake_banana:
+          base_frame: *RandomFruitMugCupBaseFrame
+          translation: *RandomBananaTranslation
+          rotation: *RandomBananaKiwiRotation
+  - &RandomOrange
+    add_model:
+      file: package://lbm_eval_models/groceries/oranges/fake_ripe_ycb_orange.sdf
+      name: orange
+      default_free_body_pose:
+        fake_ycb_orange:
+          base_frame: *RandomFruitMugCupBaseFrame
+          translation: *RandomOrangeTranslation
+          rotation: *RandomUniformRotation
+  - &RandomApple
+    add_model:
+      file: package://lbm_eval_models/groceries/apples/fake_green_sweet_crispin_apple.sdf
+      name: apple
+      default_free_body_pose:
+        fake_sweet_crispin_apple:
+          base_frame: *RandomFruitMugCupBaseFrame
+          translation: *RandomAppleTranslation
+          rotation: *RandomUniformRotation
+  - &RandomKiwi
+    add_model:
+      file: package://lbm_eval_models/groceries/berries/fake_ripe_kiwi.sdf
+      name: kiwi
+      default_free_body_pose:
+        fake_kiwi:
+          base_frame: *RandomFruitMugCupBaseFrame
+          translation: *RandomKiwiTranslation
+          rotation: *RandomBananaKiwiRotation
+  # Randomized mug and cup (tumbler).
+  - &RandomMugAnyOrientation
+    # Model the 4 possible mug orientations as different manipulands with
+    # different frames inside the model that we are posing.
+    add_model: !UniformManipuland
+      name: mug
+      values:
+        # The upright case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            mug_bottom_center__z_up:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: &RandomMugZUpDownTranslation !UniformVector
+                min: [-0.25, -0.1, 0.0]
+                max: [ 0.25,  0.1, 0.0]
+              rotation: &RandomMugRandomZRotation !Rpy
+                deg: !UniformVector
+                  min: [0, 0, -180]
+                  max: [0, 0, 180]
+        # The upside down case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            mug_top_center__z_down:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomMugZUpDownTranslation
+              rotation: *RandomMugRandomZRotation
+        # The y-up sideways case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            center__y_up:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: &RandomMugYUpDownTranslation !UniformVector
+                min: [-0.25, -0.1, 0.04]
+                max: [ 0.25,  0.1, 0.04]
+              rotation: *RandomMugRandomZRotation
+        # The y-down sideways case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            center__y_down:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomMugYUpDownTranslation
+              rotation: *RandomMugRandomZRotation
+  - &RandomMugNotUpright
+    # Model the 4 possible mug orientations as different manipulands with
+    # different frames inside the model that we are posing.
+    add_model: !UniformManipuland
+      name: mug
+      values:
+        # The upside down case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            mug_top_center__z_down:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomMugZUpDownTranslation
+              rotation: *RandomMugRandomZRotation
+        # The y-up sideways case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            center__y_up:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomMugYUpDownTranslation
+              rotation: *RandomMugRandomZRotation
+        # The y-down sideways case.
+        - file: package://lbm_eval_models/tableware/mugs/mug_inomata_white_mesh_collision.sdf
+          default_free_body_pose:
+            center__y_down:
+              base_frame: *RandomFruitMugCupBaseFrame
+              translation: *RandomMugYUpDownTranslation
+              rotation: *RandomMugRandomZRotation
+  - &RandomCupUpright
+    add_model:
+      file: package://lbm_eval_models/tableware/tumblers/tumbler_8oz_tropical_pink.sdf
+      name: cup
+      default_free_body_pose:
+        center_base__z_up:
+          base_frame: *RandomFruitMugCupBaseFrame
+          translation: !UniformVector
+            min: [-0.25, -0.1, 0.0]
+            max: [ 0.25,  0.1, 0.0]
+          rotation: !Rpy
+            deg: !UniformVector
+              min: [0, 0, -180]
+              max: [0, 0, -180]
+  # Random coaster and saucer (plate).
+  - &RandomCoaster
+    add_model:
+      file: package://lbm_eval_models/tableware/coasters/coaster_double_wood_cylinder_collision.sdf
+      name: coaster
+      default_free_body_pose:
+        center_base__z_up:
+          base_frame: manipuland_table::station_table_top
+          translation: !UniformVector
+            min: [-0.3, -0.5, 0.0]
+            max: [ 0.2,  0.0, 0.0]
+          rotation: !Rpy
+            deg: !UniformVector
+              min: [0, 0, -180]
+              max: [0, 0, 180]
+  - &RandomSaucer
+    add_model:
+      file: package://lbm_eval_models/tableware/plates/carlisle_plate_light_blue.sdf
+      name: saucer
+      default_free_body_pose:
+        flush_bottom_center__z_up:
+          base_frame: manipuland_table::station_table_top
+          translation: !UniformVector
+            min: [0.0, -0.1, 0.0]
+            max: [0.2,  0.2, 0.0]
+          rotation: !Rpy
+            deg: !UniformVector
+              min: [0, 0, -180]
+              max: [0, 0, 180]
+  # Task specific frames.
+  - &CenterZone
+    add_frame:
+      name: center_zone
+      X_PF:
+        base_frame: manipuland_table::origin
+        translation: [-0.2, 0.0, 0.0]
+
+_constraints:
+  - &NoCollisionsGeneric
+    !NonCollisionConstraint
+    forbid_collision_between:
+      - distractor.*::.*
+      - fruit_.*::.*
+      - mug::.*
+      - cup::.*
+      - coaster::.*
+      - saucer::.*
+      - left::panda_hand::.*
+      - right::panda_hand::.*
+  - &NoCollisionsBanana
+    !NonCollisionConstraint
+    forbid_collision_between:
+      - distractor.*::.*
+      - fruit_.*::.*
+      - banana::.*
+      - mug::.*
+      - cup::.*
+      - coaster::.*
+      - saucer::.*
+      - left::panda_hand::.*
+      - right::panda_hand::.*
+  - &NoCollisionsOrange
+    !NonCollisionConstraint
+    forbid_collision_between:
+      - distractor.*::.*
+      - fruit_.*::.*
+      - orange::.*
+      - mug::.*
+      - cup::.*
+      - coaster::.*
+      - saucer::.*
+      - left::panda_hand::.*
+      - right::panda_hand::.*
+  - &NoCollisionsApple
+    !NonCollisionConstraint
+    forbid_collision_between:
+      - distractor.*::.*
+      - fruit_.*::.*
+      - apple::.*
+      - mug::.*
+      - cup::.*
+      - coaster::.*
+      - saucer::.*
+      - left::panda_hand::.*
+      - right::panda_hand::.*
+  - &NoCollisionsKiwi
+    !NonCollisionConstraint
+    forbid_collision_between:
+      - distractor.*::.*
+      - fruit_.*::.*
+      - kiwi::.*
+      - mug::.*
+      - cup::.*
+      - coaster::.*
+      - saucer::.*
+      - left::panda_hand::.*
+      - right::panda_hand::.*
+  - &GenericNotInCenter
+    !FramesNotInXYRegionConstraint
+    frame_A_names:
+      - fruit_.*::origin
+      - mug::center
+      - cup::geometric_center_z_up
+      - coaster::center_base__z_up
+    frame_B_name: center_zone
+    region_B: !XYCircle
+      radius: 0.15
+  - &BananaNotInCenter
+    !FramesNotInXYRegionConstraint
+    frame_A_names:
+      - banana::origin
+    frame_B_name: center_zone
+    region_B: !XYCircle
+      radius: 0.15
+  - &OrangeNotInCenter
+    !FramesNotInXYRegionConstraint
+    frame_A_names: [orange::origin]
+    frame_B_name: center_zone
+    region_B: !XYCircle
+      radius: 0.15
+  - &AppleNotInCenter
+    !FramesNotInXYRegionConstraint
+    frame_A_names: [apple::origin]
+    frame_B_name: center_zone
+    region_B: !XYCircle
+      radius: 0.15
+  - &KiwiNotInCenter
+    !FramesNotInXYRegionConstraint
+    frame_A_names: [kiwi::origin]
+    frame_B_name: center_zone
+    region_B: !XYCircle
+      radius: 0.15
+  - &MugNotNearCoaster
+    !FramesNotInXYRegionConstraint
+    frame_A_names: [mug::center]
+    frame_B_name: coaster::center_base__z_up
+    region_B: !XYCircle
+      radius: 0.1875
+  - &CupNotNearCoaster
+    !FramesNotInXYRegionConstraint
+    frame_A_names: [cup::geometric_center_z_up]
+    frame_B_name: coaster::center_base__z_up
+    region_B: !XYCircle
+      radius: 0.1825
+
+_base_scenario: &BaseScenario
+  random_seed: 1
+  simulation_duration: .inf
+  plant_config:
+    time_step: 10e-3
+    penetration_allowance: 2e-3
+    stiction_tolerance: 1e-4
+    discrete_contact_approximation: lagged
+    contact_model: hydroelastic_with_fallback
+  scene_graph_config:
+    default_proximity_properties:
+      margin: 1e-4
+  simulator_config:
+    integration_scheme: runge_kutta2
+    max_step_size: 0.001
+    accuracy: 0.01
+    use_error_control: false
+    target_realtime_rate: 0.0
+    publish_every_time_step: false
+  directives:
+    - *RobotAndTable
+  item_locking:
+    unlock_near_geometry:
+      - "right::panda::panda_link3"
+      - "right::panda::panda_link4"
+      - "right::panda_hand::finray_finger_L"
+      - "right::panda_hand::finray_finger_R"
+      - "left::panda::panda_link3"
+      - "left::panda::panda_link4"
+      - "left::panda_hand::finray_finger_L"
+      - "left::panda_hand::finray_finger_R"
+  initial_position:
+    right::panda:
+      panda_joint1: [0.4363323129985824]      # range: [-2.8973, 2.8973]
+      panda_joint2: [-0.6108652381980153]     # range: [-1.7628, 1.7628]
+      panda_joint3: [0.0]                     # range: [-2.8973, 2.8973]
+      panda_joint4: [-2.356194490192345]      # range: [-3.0718, -0.0698]
+      panda_joint5: [0]                       # range: [-2.8973, 2.8973]
+      panda_joint6: [1.8325957145940461]      # range: [-0.0175, 3.7525]
+      panda_joint7: [-1.1344640137963142]     # range: [-2.8973, 2.8973]
+    right::panda_hand:
+      finger_joint_1: [-0.05]      # range: [-0.0545, 0.0]
+      finger_joint_2: [0.05]      # range: [0.0, 0.0545]
+    left::panda:
+      panda_joint1: [-0.6108652381980153]     # range: [-2.8973, 2.8973]
+      panda_joint2: [-0.6108652381980153]     # range: [-1.7628, 1.7628]
+      panda_joint3: [0]                       # range: [-2.8973, 2.8973]
+      panda_joint4: [-2.356194490192345]      # range: [-3.0718, -0.0698]
+      panda_joint5: [0]                       # range: [-2.8973, 2.8973]
+      panda_joint6: [1.8325957145940461]      # range: [-0.0175, 3.7525]
+      panda_joint7: [0.7853981633974483]      # range: [-2.8973, 2.8973]
+    left::panda_hand:
+      finger_joint_1: [-0.05]      # range: [-0.0545, 0.0]
+      finger_joint_2: [0.05]      # range: [0.0, 0.0545]
+  lcm_buses: *VisualizerLcmBusOnly
+  model_drivers:
+    # N.B. The simulated arm is a panda arm, but the Iiwa driver used here (and
+    # below) is compatible software.  See
+    # https://github.com/RobotLocomotion/drake/issues/22994 for further
+    # discussion.
+    right::panda: !IiwaDriver
+      hand_model_name: "right::panda_hand"
+      arm_child_frame_name: panda_link0
+      gripper_parent_frame_name: panda_link8
+      control_mode: position_only
+      ext_joint_filter_tau: 0.01
+      lcm_bus: right
+      # TODO(anzu#12109) review this number and its effect on dynamics.
+      lcm_status_period: 0.001
+    right::panda_hand: !SchunkWsgImplicitPdDriver {}
+    left::panda: !IiwaDriver
+      hand_model_name: "left::panda_hand"
+      arm_child_frame_name: panda_link0
+      gripper_parent_frame_name: panda_link8
+      control_mode: position_only
+      ext_joint_filter_tau: 0.01
+      lcm_bus: left
+      # TODO(anzu#12109) review this number and its effect on dynamics.
+      lcm_status_period: 0.001
+    left::panda_hand: !SchunkWsgImplicitPdDriver {}
+  cameras:
+    # Cameras as defined in package://lbm_eval_models/stations/cabot/add_cabot_without_grippers.dmd.yaml.
+    # Intrinsics were taken from the IRL Salem station, and recorded in:
+    # https://github.shared-services.aws.tri.global/robotics/anzu/issues/14465#issuecomment-58991
+    # https://github.shared-services.aws.tri.global/robotics/anzu/issues/14460#issuecomment-59117
+    - &CabotSceneCameraRight
+      name: "6CD146030E99"
+      focal: !FocalLength
+        x: !Uniform
+          min: 616.129
+          max: 616.129
+        y: !Uniform
+          min: 615.758
+          max: 615.758
+      # center_x: !Uniform ###===###
+      #   min: 321.269
+      #   max: 321.269
+      # center_y: !Uniform
+      #   min: 247.864
+      #   max: 247.864
+      center_x: 321.269
+      center_y: 247.864 ###---###
+      # For now, we need to specify discrete values for !UniformDiscrete
+      # TODO(rcory) Implement something like !UniformDiscreteRange in
+      # `take_scenario_sample`
+      width: !UniformDiscrete
+        values: [640]
+      height: !UniformDiscrete
+        values: [480]
+      rgb: true
+      depth: true
+      label: true
+      X_PB:
+        base_frame: camera_6CD146030E99 ###===###
+        # translation: !UniformVector
+        #   min: [0, 0, 0]
+        #   max: [0, 0, 0]
+        # rotation: !AngleAxis
+        #   angle_deg: !Uniform
+        #     min: 0
+        #     max: 0
+        #   axis: !GaussianVector
+        #     mean: [0, 0, 0]
+        #     stddev: [1, 1, 1]
+        rotation: !Rpy
+          deg: [70.0, -10.0, 180.0]
+        translation: [-0.15, -1.2, 0.6] ###---###
+      fps: 20
+      renderer_name: "renderer_1"
+      renderer_class: !RenderEngineVtkParams
+        lights:
+          - color: !Hsv
+              hsv: !UniformVector
+                min: [0.66, 0, 1.0]
+                max: [0.33, 0.5, 1.0]
+            attenuation_values: [1, 0, 0]
+            frame: "world"
+            intensity: !Uniform { min: 1.5, max: 4.0 }
+            direction: !UniformVector
+              min: [0, -0.5, -1]
+              max: [0.5, 0.5, -1]
+            cone_angle: 20
+            type: "directional"
+        environment_map:
+          skybox: true
+          texture: !EquirectangularMap
+            path: package://lbm_eval_models/environment_maps/poly_haven_studio_4k.hdr
+        exposure: 0.4
+        cast_shadows: true
+        shadow_map_size: 1024
+      lcm_bus: camera
+    - &CabotSceneCameraLeft
+      <<: *CabotSceneCameraRight
+      name: "6CD146031C25"
+      focal: !FocalLength
+        x: !Uniform
+          min: 612.720
+          max: 612.720
+        y: !Uniform
+          min: 612.25
+          max: 612.25
+      center_x: !Uniform
+        min: 322.050
+        max: 322.050
+      center_y: !Uniform
+        min: 238.161
+        max: 238.161
+      width: !UniformDiscrete
+        values: [640]
+      height: !UniformDiscrete
+        values: [480]
+      X_PB:
+        base_frame: camera_6CD146031C25
+        translation: !UniformVector
+          min: [0, 0, 0]
+          max: [0, 0, 0]
+        rotation: !AngleAxis
+          angle_deg: !Uniform
+            min: 0
+            max: 0
+          axis: !GaussianVector
+            mean: [0, 0, 0]
+            stddev: [1, 1, 1]
+      renderer_class: "RenderEngineVtk"
+    - &CabotWristCameraLeftMinus
+      <<: *CabotSceneCameraRight
+      name: "BFS_23595718"
+      focal: !FocalLength
+        x: !Uniform
+          min: 231.778
+          max: 231.778
+        y: !Uniform
+          min: 231.252
+          max: 231.252
+      center_x: !Uniform
+        min: 486.614
+        max: 486.614
+      center_y: !Uniform
+        min: 303.9256
+        max: 303.9256
+      width: !UniformDiscrete
+        values: [960]
+      height: !UniformDiscrete
+        values: [600]
+      fisheye_distortion:
+        focal:
+          x: 416.3126682
+          y: 415.36659872
+        center_x: 484.25814963
+        center_y: 304.04461178
+        d: [0.01143222, 0.03684697, -0.05852974, 0.03031175]
+      X_PB:
+        base_frame: camera_BFS_23595718
+        translation: !UniformVector
+          min: [0, 0, 0]
+          max: [0, 0, 0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, 0]
+            max: [0, 0, 0]
+      renderer_class: "RenderEngineVtk"
+    - &CabotWristCameraLeftPlus
+      <<: *CabotSceneCameraRight
+      name: "BFS_23595721"
+      focal: !FocalLength
+        x: !Uniform
+          min: 222.245
+          max: 222.245
+        y: !Uniform
+          min: 221.878
+          max: 221.878
+      center_x: !Uniform
+        min: 486.036
+        max: 486.036
+      center_y: !Uniform
+        min: 299.461
+        max: 299.461
+      width: !UniformDiscrete
+        values: [960]
+      height: !UniformDiscrete
+        values: [600]
+      fisheye_distortion:
+        focal:
+          x: 413.27625353
+          y: 412.59454269
+        center_x: 483.47171138
+        center_y: 299.43713525
+        d: [0.01607469, 0.00335369, 0.00144981, -0.00187433]
+      X_PB:
+        base_frame: camera_BFS_23595721
+        translation: !UniformVector
+          min: [0, 0, 0]
+          max: [0, 0, 0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, 0]
+            max: [0, 0, 0]
+      renderer_class: "RenderEngineVtk"
+    - &CabotWristCameraRightMinus
+      <<: *CabotSceneCameraRight
+      name: "BFS_23595722"
+      focal: !FocalLength
+        x: !Uniform
+          min: 178.822
+          max: 178.822
+        y: !Uniform
+          min: 178.504
+          max: 178.504
+      center_x: !Uniform
+        min: 436.410
+        max: 436.410
+      center_y: !Uniform
+        min: 301.674
+        max: 301.674
+      width: !UniformDiscrete
+        values: [960]
+      height: !UniformDiscrete
+        values: [600]
+      fisheye_distortion:
+        focal:
+          x: 385.89769466
+          y: 385.20962605
+        center_x: 459.91807512
+        center_y: 301.92267042
+        d: [0.16117042, -0.32232478, 0.3279451, -0.11335791]
+      X_PB:
+        base_frame: camera_BFS_23595722
+        translation: !UniformVector
+          min: [0, 0, 0]
+          max: [0, 0, 0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, 0]
+            max: [0, 0, 0]
+      renderer_class: "RenderEngineVtk"
+    - &CabotWristCameraRightPlus
+      <<: *CabotSceneCameraRight
+      name: "BFS_23595725"
+      focal: !FocalLength
+        x: !Uniform
+          min: 212.426
+          max: 212.426
+        y: !Uniform
+          min: 212.992
+          max: 212.992
+      center_x: !Uniform
+        min: 470.830
+        max: 470.830
+      center_y: !Uniform
+        min: 279.669
+        max: 279.669
+      width: !UniformDiscrete
+        values: [960]
+      height: !UniformDiscrete
+        values: [600]
+      fisheye_distortion:
+        focal:
+          x: 391.72803823
+          y: 392.77228576
+        center_x: 473.89241068
+        center_y: 278.94452993
+        d: [0.06496022, -0.01126586, -0.04739537, 0.03582876]
+      X_PB:
+        base_frame: camera_BFS_23595725
+        translation: !UniformVector
+          min: [0, 0, 0]
+          max: [0, 0, 0]
+        rotation: !Rpy
+          deg: !UniformVector
+            min: [0, 0, 0]
+            max: [0, 0, 0]
+      renderer_class: "RenderEngineVtk"
+  visualization:
+    lcm_bus: visualizer_bus
+    enable_meshcat_creation: true
+    publish_illustration: true
+    publish_contacts: true
+    publish_proximity: true
+    # Integer multiple of plant_config.timestep to avoid as many small
+    # simulation steps as practical.
+    publish_period: 0.05
+
+simulation_scenario_OneOfEverything:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *ExampleBanana
+    - *ExampleOrange
+    - *ExampleApple
+    - *ExampleKiwi
+    - *ExampleMug
+    - *ExampleCup
+    - *ExampleCoaster
+    - *ExampleSaucer
+    - *ExampleCerealBox
+    - *ExampleCerealBoxWeld
+    - *ExampleBowl
+    - *ExampleBowlWeld
+    - *ExampleSpatula
+    - *ExampleSpatulaWeld
+    - *ExampleServingSpoon
+    - *ExampleServingSpoonWeld
+    - *ExampleKnife
+    - *ExampleKnifeWeld
+    - *ExampleFork
+    - *ExampleForkWeld
+    - *ExampleTeaspoon
+    - *ExampleTeaspoonWeld
+    - *ExampleDinnerSpoon
+    - *ExampleDinnerSpoonWeld
+  preconditions:
+    constraints: {}
+
+simulation_scenario_DistractorsTest:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+  preconditions:
+    constraints: {}
+
+simulation_scenario_RandomizedFruitTest:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+
+simulation_scenario_BananaManip:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomBanana
+    - *RandomFruitSelectionNoBanana
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsBanana: *NoCollisionsBanana
+
+simulation_scenario_BananaManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomBanana
+    - *RandomFruitSelectionNoBanana
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsBanana: *NoCollisionsBanana
+      BananaNotInCenter: *BananaNotInCenter
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_OrangeManip:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomOrange
+    - *RandomFruitSelectionNoOrange
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsOrange: *NoCollisionsOrange
+
+simulation_scenario_OrangeManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomOrange
+    - *RandomFruitSelectionNoOrange
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsOrange: *NoCollisionsOrange
+      OrangeNotInCenter: *OrangeNotInCenter
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_AppleManip:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomApple
+    - *RandomFruitSelectionNoApple
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsApple: *NoCollisionsApple
+
+simulation_scenario_AppleManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomApple
+    - *RandomFruitSelectionNoApple
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsApple: *NoCollisionsApple
+      AppleNotInCenter: *AppleNotInCenter
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_KiwiManip:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomKiwi
+    - *RandomFruitSelectionNoKiwi
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsKiwi: *NoCollisionsKiwi
+
+simulation_scenario_KiwiManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomKiwi
+    - *RandomFruitSelectionNoKiwi
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsKiwi: *NoCollisionsKiwi
+      KiwiNotInCenter: *KiwiNotInCenter
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_MugCupManip:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+
+simulation_scenario_MugManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_MugManipNotUpright:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugNotUpright
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+
+simulation_scenario_CupManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_CupManipNotNearCoaster:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+      MugNotInCenter: *CupNotNearCoaster
+
+simulation_scenario_CoasterManipNoCenter:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+      GenericNotInCenter: *GenericNotInCenter
+
+simulation_scenario_CoasterManipNotNearMug:
+  <<: *BaseScenario
+  directives:
+    - *RobotAndTable
+    - *Distractor0Frame0
+    - *Distractor0Frame1
+    - *Distractor0Frame2
+    - *Distractor0
+    - *Distractor1Frame0
+    - *Distractor1Frame1
+    - *Distractor1Frame2
+    - *Distractor1
+    - *RandomFruitMugCupFrame0
+    - *RandomFruitMugCupFrame1
+    - *RandomFruitMugCupFrame2
+    - *RandomFruitMugCupFrame3
+    - *RandomFruitSelection
+    - *RandomMugAnyOrientation
+    - *RandomCupUpright
+    - *RandomCoaster
+    - *RandomSaucer
+    - *CenterZone
+  preconditions:
+    num_sample_attempts: 200
+    constraints:
+      NoCollisionsGeneric: *NoCollisionsGeneric
+      MugNotNearCoaster: *MugNotNearCoaster

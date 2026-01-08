@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="generic_fruit_bowl">
+    <link name="generic_fruit_bowl">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0.0431 0 0 0</pose>
+        <mass>0.638</mass>
+        <inertia>
+          <ixx> 0.00262</ixx>
+          <ixy> 0.00000</ixy>
+          <ixz> 0.00000</ixz>
+          <iyy> 0.00262</iyy>
+          <iyz> 0.00000</iyz>
+          <izz> 0.00427</izz>
+        </inertia>
+      </inertial>
+      <visual name="generic_fruit_bowl">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/bowls/assets/generic_fruit_bowl.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="generic_fruit_bowl_collision">
+        <pose>0.0 0.0 0.0 0.0 0.0 -0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/bowls/assets/generic_fruit_bowl_low.vtk</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e8</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+    </link>
+    <frame name="origin">
+      <pose relative_to="generic_fruit_bowl">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="bottom_center__z_up">
+      <pose relative_to="generic_fruit_bowl">0 0 0 0 0 0</pose>
+    </frame>
+    <!-- The pose of the object when it is at rest on the table surface.
+         I.e. if spawned with this frame on the table surface at (0, 0, 0) it
+         will not move (approximately). It is also approximately centered such
+         that if it was rotated around the table z-axis, it would sweep out a
+         minimal circle.
+    -->
+    <frame name="at_rest_right_side_up">
+      <pose relative_to="generic_fruit_bowl">0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="station_gantry_base_plate">
+    <link name="station_gantry_base_plate">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <!-- These are just placeholder inertial values, since this body is
+        fixed to the world-->
+        <pose>5.43e-05 -0.0196 0.0505 0 0 0</pose>
+        <mass>0.136</mass>
+        <inertia>
+          <ixx> 0.000109</ixx>
+          <ixy>-0.000000</ixy>
+          <ixz> 0.000000</ixz>
+          <iyy> 0.000128</iyy>
+          <iyz>-0.000000</iyz>
+          <izz> 0.000054</izz>
+        </inertia>
+      </inertial>
+      <visual name="station_gantry_base_plate">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/stations/franka_station/assets/station_arm_cart_base_plate.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="station_gantry_base_plate_box_collision">
+        <pose>0.0 0.0 0.00635 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.22 0.22 0.0127</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <frame name="origin">
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

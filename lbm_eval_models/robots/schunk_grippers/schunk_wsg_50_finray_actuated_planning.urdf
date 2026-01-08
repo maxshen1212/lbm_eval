@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="schunk_gripper">
+  <!-- Note: this URDF file contains only approximated collision geometries
+              for our robot planning/control purposes. -->
+  <link name="gripper">
+    <inertial>
+      <mass value="1.16"/>
+      <origin xyz="-1.74e-05 -0.00487 0.0355" rpy="0 0 0"/>
+      <inertia ixx="0.00265" ixy="-0.00002" ixz="0.00000" iyy="0.00073" iyz="0.00016" izz="0.00241"/>
+    </inertial>
+    <visual>
+      <origin rpy="3.1416 0 1.5708" xyz="0 0 0.0365"/>
+      <geometry>
+        <mesh filename="package://lbm_eval_models/robots/schunk_grippers/assets/schunk_wsg50_base.gltf" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.06 0.05625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.03 0.05625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.05625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.03 0.05625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.06 0.05625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.06 0.02625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 -0.00375"/>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.06 0.02625"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.06 -0.00375"/>
+      <geometry>
+        <sphere radius="0.0325"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="left_finger">
+    <inertial>
+      <mass value="0.083"/>
+      <origin xyz="5.31e-05 -0.0158 0.0546" rpy="0 0 0"/>
+      <inertia ixx="0.000113" ixy="0.000000" ixz="0.000000" iyy="0.000110" iyz="0.000003" izz="0.000015"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 -1.5708" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://lbm_eval_models/robots/schunk_grippers/assets/finray_finger_MA-049-PT-0005_MA-049-PT-0006_2024_07_23_L.gltf" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0125 0.0175 0.03"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0125 0.0175 0.03"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.01 0.01 0.05"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.01 0.01 0.05"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0075 0.00625 0.065"/>
+      <geometry>
+        <sphere radius="0.0125"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0075 0.00625 0.065"/>
+      <geometry>
+        <sphere radius="0.0125"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.005 0.0035 0.0775"/>
+      <geometry>
+        <sphere radius="0.011"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.005 0.0035 0.0775"/>
+      <geometry>
+        <sphere radius="0.011"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.006 -0.001 0.09"/>
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.006 -0.001 0.09"/>
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.008 -0.0035 0.1"/>
+      <geometry>
+        <sphere radius="0.006"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.0035 0.1"/>
+      <geometry>
+        <sphere radius="0.006"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.008 -0.0035 0.1"/>
+      <geometry>
+        <sphere radius="0.006"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0095 -0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.003 -0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.003 -0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0095 -0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.01 -0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.005 -0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.005 -0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.01 -0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="right_finger">
+    <inertial>
+      <mass value="0.083"/>
+      <origin xyz="5.31e-05 -0.0158 0.0546" rpy="0 0 0"/>
+      <inertia ixx="0.000113" ixy="0.000000" ixz="0.000000" iyy="0.000110" iyz="0.000003" izz="0.000015"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 -1.5708" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://lbm_eval_models/robots/schunk_grippers/assets/finray_finger_MA-049-PT-0005_MA-049-PT-0006_2024_07_23_R.gltf" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0125 -0.0175 0.03"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0125 -0.0175 0.03"/>
+      <geometry>
+        <sphere radius="0.02"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.01 -0.01 0.05"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.01 -0.01 0.05"/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0075 -0.00625 0.065"/>
+      <geometry>
+        <sphere radius="0.0125"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0075 -0.00625 0.065"/>
+      <geometry>
+        <sphere radius="0.0125"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.005 -0.0035 0.0775"/>
+      <geometry>
+        <sphere radius="0.011"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.005 -0.0035 0.0775"/>
+      <geometry>
+        <sphere radius="0.011"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.006 0.001 0.09"/>
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.006 0.001 0.09"/>
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.008 0.0035 0.1"/>
+      <geometry>
+        <sphere radius="0.006"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0035 0.1"/>
+      <geometry>
+        <sphere radius="0.006"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.008 0.0035 0.1"/>
+      <geometry>
+        <sphere radius="0.006"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0095 0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.003 0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.003 0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.0095 0.006 0.1075"/>
+      <geometry>
+        <sphere radius="0.004"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.01 0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.005 0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.005 0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.01 0.008 0.114"/>
+      <geometry>
+        <sphere radius="0.003"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="right_finger_sliding_joint" type="prismatic">
+    <parent link="gripper"/>
+    <child link="right_finger"/>
+    <origin rpy="0 0 0" xyz="0 0 0.0747"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="80" lower="-0.0545" upper="0.0" velocity="0.2" drake:acceleration="1.0"/>
+  </joint>
+  <joint name="left_finger_sliding_joint" type="prismatic">
+    <parent link="gripper"/>
+    <child link="left_finger"/>
+    <origin rpy="0 0 0" xyz="0 0 0.0747"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="80" lower="0.0" upper="0.0545" velocity="0.2" drake:acceleration="1.0"/>
+  </joint>
+  <transmission name="right_finger_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_finger_sliding_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_finger_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="left_finger_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_finger_sliding_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_finger_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <drake:collision_filter_group name="gripper_links">
+    <drake:member link="gripper" />
+    <drake:member link="left_finger" />
+    <drake:member link="right_finger" />
+    <drake:ignored_collision_filter_group name="gripper_links" />
+  </drake:collision_filter_group>
+</robot>

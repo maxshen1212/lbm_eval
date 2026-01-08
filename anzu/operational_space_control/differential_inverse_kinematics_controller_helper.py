@@ -122,6 +122,7 @@ def _MakeCollisionChecker(*, dmd_url: str) -> SceneGraphCollisionChecker:
     model_builder = RobotDiagramBuilder()
     model_builder.parser().package_map().AddMap(MakeDefaultAnzuPackageMap())
     model_builder.parser().AddModelsFromUrl(dmd_url)
+    print(f"dmd_url: {dmd_url}")
 
     # Identify model instances belonging to the robot.
     known_robot_model_instance_names = [

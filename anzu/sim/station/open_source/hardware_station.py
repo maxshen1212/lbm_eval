@@ -16,7 +16,7 @@ from pydrake.systems.framework import PortDataType
 from pydrake.systems.lcm import ApplyLcmBusConfig
 from pydrake.visualization import ApplyVisualizationConfig
 
-from anzu.common.anzu_model_directives import add_default_anzu_packages
+from anzu.common.anzu_model_directives import add_default_anzu_packages, _add_local_packages ###===### ###---###
 from anzu.sim.camera.camera_config import AnzuCameraConfig
 from anzu.sim.camera.camera_config_functions import ApplyAnzuCameraConfig
 from anzu.sim.common.hardware_station_monitor import CompositeMonitor
@@ -111,6 +111,7 @@ def MakeHardwareStation(
         # TODO(jeremy-nimmer) It's not clear how this defaulting should
         # generalize when used outside of Anzu.
         add_default_anzu_packages(parser.package_map())
+        _add_local_packages(parser.package_map()) ###===### ###---###
     else:
         for package_xml in package_xmls:
             parser.package_map().AddPackageXml(package_xml)

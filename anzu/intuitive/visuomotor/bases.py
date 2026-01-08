@@ -12,6 +12,9 @@ import logging
 import typing
 from typing import Dict, Optional
 
+import os 
+import imageio 
+
 import gymnasium as gym
 from robot_gym.policy import Policy
 
@@ -481,6 +484,18 @@ class GymEnvWrappingAnzuEnv(gym.Env):
             self.recorder.close()
         self._closed = True
 
+# import sys
+# from IPython.core.debugger import Pdb
+# class ForkedIPdb(Pdb):
+#     # An ipdb subclass that can be used from a forked multiprocessing child.
+
+#     def interaction(self, *args, **kwargs):
+#         _stdin = sys.stdin
+#         try:
+#             sys.stdin = open('/dev/stdin')
+#             super().interaction(*args, **kwargs)
+#         finally:
+#             sys.stdin = _stdin
 
 def collect_episode_gym(
     env: gym.Env,
@@ -512,16 +527,32 @@ def collect_episode_gym(
     policy.reset(seed=seed, options=options)
     time_step = env.reset(seed=seed, options=options)
 
+    ###===###
+    frames = []
+    demonstration_index = options["demonstration_index"]
+    videos_save_dir = os.path.join(options["save_dir"], "videos")
+    os.makedirs(videos_save_dir, exist_ok=True)
+    scene_right_rgb = time_step.obs.visuo["scene_right_0"].rgb.array
+    frames.append(scene_right_rgb)
+    ###---###
+    
     try:
         while not is_terminal_time_step(time_step):
             act = policy.step(time_step.obs)
             time_step = env.step(act)
             env.render()
+            scene_right_rgb = time_step.obs.visuo["scene_right_0"].rgb.array ###===###
+            frames.append(scene_right_rgb) ###---###
     finally:
         if isinstance(env, GymEnvWrappingAnzuEnv):
             # TODO(eric.cousineau): How to make more generic?
             env.stop_episode()
 
+        ###===###
+        video_path = os.path.join(videos_save_dir, f"episode_{demonstration_index}.mp4") 
+        imageio.mimwrite(video_path, frames, fps=10)
+        print(f"Episode {demonstration_index} video saved to {video_path}.") 
+        ###---###
 
 def closing_multiple(*things):
     """

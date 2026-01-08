@@ -1,0 +1,9 @@
+# This is the station model used for simulation.
+
+directives:
+# Note: The "add...table" directive must always come before the "add cabot..."
+# directive, due to the latter's use of the former's frame declarations.
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/add_natural_brown_table_top.dmd.yaml
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/add_cabot_with_grippers.dmd.yaml

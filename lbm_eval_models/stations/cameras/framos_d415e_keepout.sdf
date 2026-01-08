@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<sdf xmlns:drake="http://drake.mit.edu" version="1.7">
+  <!--
+  Keep-out zone for Framos D415e.
+
+  Coordinates:
+      +X - Right
+      +Y - Down
+      +Z - Forward
+  (0, 0, 0) at the middle center of the front of the camera.
+  -->
+  <model name="d415e">
+    <link name="body">
+      <visual name="illustration">
+        <!-- We omit the camera model from rendering to avoid obstructing the
+        sensor's view . -->
+        <drake:perception_properties enabled="false"/>
+        <geometry>
+          <box>
+            <!-- A very rough approximation of the actual enclosure size. -->
+            <size>0.08 0.05 0.04</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <!-- Our traditional keep-out zone size. -->
+            <size>0.3 0.1 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <frame name="rgb">
+      <!-- An approximation measured with a tape ruler. -->
+      <pose relative_to="body">-0.032 0 0 0 0 0</pose>
+    </frame>
+    <frame name="origin">
+      <pose relative_to="body">0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

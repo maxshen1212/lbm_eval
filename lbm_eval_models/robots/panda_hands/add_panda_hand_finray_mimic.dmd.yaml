@@ -1,0 +1,26 @@
+# TODO(rcory) Consolidate this file with add_panda_hand_finray.dmd.yaml once all sims
+#  support the gripper mimic joint.
+directives:
+
+- add_model:
+    name: panda_hand
+    file: package://lbm_eval_models/robots/panda_hands/panda_hand_finray_actuated_mesh_mimic.urdf
+- add_frame:
+    # N.B. See https://github.com/RobotLocomotion/drake/issues/14977
+    name: panda_hand::_origin
+    X_PF:
+      base_frame: panda::panda_link8
+      translation: [0, 0, 0]
+      rotation: !Rpy { deg: [0, 0, -45] }
+- add_weld:
+    parent: panda_hand::_origin
+    child: panda_hand::panda_hand
+- add_frame:
+    name: panda_hand::grasp_frame
+    X_PF:
+      base_frame: panda_hand::panda_finger_tip_center
+      translation: [0, 0, 0]
+      rotation: !Rpy { deg: [180, 0, 0] }
+
+- add_directives:
+    file: package://lbm_eval_models/robots/panda_hands/add_panda_hand_calib_tip.dmd.yaml

@@ -1,0 +1,10 @@
+directives:
+- add_frame:
+    name: manipuland_table::table_top_center
+    X_PF:
+      base_frame: manipuland_table::origin
+      translation: [0, 0, 0]
+      rotation: !Rpy { deg: [0, 0, 0] }
+- add_weld:
+    parent: world
+    child: manipuland_table::table_top_center

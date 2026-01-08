@@ -1,0 +1,12 @@
+directives:
+- add_collision_filter_group:
+    name: table_filter_group
+    members:
+    - manipuland_table::station_table_top
+- add_collision_filter_group:
+    name: finger_filter_group
+    member_groups:
+    - left::finger_filter_group
+    - right::finger_filter_group
+    ignored_collision_filter_groups:
+    - table_filter_group

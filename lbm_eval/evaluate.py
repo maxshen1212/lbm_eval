@@ -269,6 +269,7 @@ def _evaluate_one_impl(
     # skills must have a file named "skill_filenames.txt" at their root,
     # containing a newline-separated list of skill filename relative paths.
     package_map = MakeDefaultAnzuPackageMap()
+    print(f"package_map.GetPackageNames(): {package_map.GetPackageNames()}")
     config_file = None
     for package_name in package_map.GetPackageNames():
         base = Path(package_map.GetPath(package_name))

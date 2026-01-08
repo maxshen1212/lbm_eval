@@ -1,0 +1,43 @@
+directives:
+
+- add_model:
+    name: flir_assembly
+    file: package://lbm_eval_models/robots/schunk_grippers/flir_assembly_primitives.sdf
+- add_model:
+    # N.B. This is named `panda_hand` to simplify backwards compatibility.
+    name: panda_hand
+    file: package://lbm_eval_models/robots/schunk_grippers/schunk_wsg_50_finray_actuated_mimic_simulation.sdf
+- add_frame:
+    name: panda_hand::_flir_assembly_mount
+    X_PF:
+      base_frame: panda_hand::schunk_wsg50_base
+      rotation: !Rpy { deg: [0, 0, 0] }
+      # y-offset taken from the reference model "schunk_flir_assembly.sdf" at
+      # link "schunk_wsg50_base", using the file at models/gripper_assemblies
+      # as of on 2024-11-04 git sha d3ab8c1 which has since been deleted.
+      translation: [0, -0.04895, 0]
+-  add_weld:
+     parent: flir_assembly::schunk_franka_adapter
+     child: panda_hand::_flir_assembly_mount
+
+- add_frame:
+    name: panda::panda_schunk_mount
+    X_PF:
+      base_frame: panda::flange_rotated
+      rotation: !Rpy { deg: [90, 0, 90] }
+- add_weld:
+    parent: panda::panda_schunk_mount
+    child: flir_assembly::schunk_franka_adapter
+
+- add_collision_filter_group:
+    # TODO(calderpg) Revise wrist/gripper/cameras filter groups.
+    name: gripper_filter_group
+    members:
+    - flir_assembly::schunk_franka_adapter
+    - flir_assembly::flir_blackfly_camera_marshall_28_lens_franka_mount_L
+    - flir_assembly::flir_blackfly_camera_marshall_28_lens_franka_mount_R
+    - panda_hand::schunk_wsg50_base
+    - panda_hand::finray_finger_L
+    - panda_hand::finray_finger_R
+    ignored_collision_filter_groups:
+      - panda_wrist_filter_group

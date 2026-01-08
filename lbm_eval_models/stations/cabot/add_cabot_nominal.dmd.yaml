@@ -1,0 +1,18 @@
+# This is the station model used for planning and control.
+
+directives:
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/add_natural_brown_table_top.dmd.yaml
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/add_cabot_without_grippers.dmd.yaml
+
+# - Add hands.
+- add_directives:
+    model_namespace: right
+    file: package://lbm_eval_models/robots/schunk_grippers/add_panda_hand_schunk_wsg.dmd.yaml
+- add_directives:
+    model_namespace: left
+    file: package://lbm_eval_models/robots/schunk_grippers/add_panda_hand_schunk_wsg.dmd.yaml
+
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/filter_finger_table_collisions.dmd.yaml

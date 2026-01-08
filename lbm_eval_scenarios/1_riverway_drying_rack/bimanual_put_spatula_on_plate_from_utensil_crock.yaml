@@ -1,0 +1,158 @@
+_aliases:
+  - &skill BimanualPutSpatulaOnPlateFromUtensilCrock
+  - &t_max 25.0
+
+UserToSim: !MultiarmScenarioConfig &multiarm_scenario_sim
+  env: !HardwareStationScenarioSimulationEnvConfig &hardware_sim_env
+    station_name: riverway
+    skill: *skill
+    default_language_instruction: "put the spatula on the plate from the utensil holder"
+    # user_input: !UserInputJoystickConfig {}
+    user_input: !UserInputFootSwitchConfig {}
+    robot_setup: !MultiarmRobotSetup
+      diff_ik_names: &diff_ik_names
+        - "right::panda"
+        - "left::panda"
+      diff_ik_frames:
+        - "right::panda::panda_link8"
+        - "left::panda::panda_link8"
+      gripper_names: &gripper_names
+        - "right::panda_hand"
+        - "left::panda_hand"
+    simulation_scenario_config: !SimulationScenarioConfig &scenario_config
+      scenario_file: package://lbm_eval_scenarios/1_riverway_drying_rack/riverway_drying_rack_multitask_scenarios.yaml
+      scenario_name: simulation_scenario_SpatulaInUtensilCrockPlateOnTable
+      # The realtime rate is unlimited in the simulation scenario file; limit
+      # it to real time for teleoperation.
+      scenario_text: '{ simulator_config: { target_realtime_rate: 1.0 } }'
+      # It might take many trials to find a satisfied scenario, so we use all CPUs
+      # to sample the scenario in parallel.
+      num_sample_processes: null
+    camera_overrides:
+      remove_cameras: True
+    dt: 0.1
+    reward_configs:
+      - !RelativeTranslationDistanceCostConfig &spatula_translation_cost
+        name: spatula_0.translation
+        frame_a_name: plate_0::flush_top_center__z_up
+        frame_b_name: spatula_0::handle_center_aligned
+    task_predicate_configs:
+      - !OnlyMakeContactWithPredicateConfig &spatula_on_top_predicate
+        name: spatula_0.on_top
+        body_A_scoped_name: spatula_0::thimma_flat_spatula
+        body_B_scoped_name: plate_0::ikea_dinera_plate_8in
+        frame_P_name: world
+        v_PA_bound: 0.05
+        w_PA_bound: 0.05
+    diff_ik_config: !DifferentialInverseKinematicsConfig
+      allow_finger_table_collision: true
+      config_file: package://anzu/intuitive/visuomotor/demo/visuomotor_multi_frame_pose_stream_dual_arm_panda.yaml
+  controller:
+    # policy: !DualSpaceMousePolicyConfig
+    #   devices:
+    #     - model_name: right::panda
+    #       gripper_name: right::panda_hand
+    #       config:
+    #         gripper_open_width: 0.08
+    #     - model_name: left::panda
+    #       gripper_name: left::panda_hand
+    #       config:
+    #         gripper_open_width: 0.08
+    #   skill: *skill
+    policy: !OculusTeleopPolicyConfig
+      controllers:
+        right:
+          model_name: right::panda
+          gripper_name: right::panda_hand
+          config:
+            gripper_open_width: 0.08
+        left:
+          model_name: left::panda
+          gripper_name: left::panda_hand
+          config:
+            gripper_open_width: 0.08
+      translation_scale: 1.6
+      skill: *skill
+
+RosServerToSim: !MultiarmScenarioConfig
+  << : *multiarm_scenario_sim
+  env: !HardwareStationScenarioSimulationEnvConfig
+    <<: *hardware_sim_env
+    t_max: *t_max
+    user_input: !UserInputNoneConfig {}
+    simulation_scenario_config: !SimulationScenarioConfig
+      <<: *scenario_config
+      # Disable LCM visualization; remove the realtime rate override.
+      scenario_text: '{ lcm_buses: { visualizer_bus: { lcm_url: memq://null } } }'
+    camera_overrides:
+      remove_cameras: False
+  controller:
+    policy: !RosServicePolicyConfig {}
+
+GrpcServerToSim: !MultiarmScenarioConfig
+  << : *multiarm_scenario_sim
+  env: !HardwareStationScenarioSimulationEnvConfig
+    <<: *hardware_sim_env
+    t_max: *t_max
+    user_input: !UserInputNoneConfig {}
+    simulation_scenario_config: !SimulationScenarioConfig
+      <<: *scenario_config
+      # Disable LCM visualization; remove the realtime rate override.
+      scenario_text: '{ lcm_buses: { visualizer_bus: { lcm_url: memq://null } } }'
+    camera_overrides:
+      remove_cameras: False
+  controller:
+    policy: !LbmPolicyClientConfig {}
+
+ReplayToSim: !MultiarmScenarioConfig
+  env: !HardwareStationScenarioSimulationEnvConfig
+    <<: *hardware_sim_env
+    user_input: !UserInputNoneConfig {}
+    simulation_scenario_config: !SimulationScenarioConfig
+      <<: *scenario_config
+      # Disable LCM visualization; remove the realtime rate override.
+      scenario_text: '{ lcm_buses: { visualizer_bus: { lcm_url: memq://null } } }'
+    camera_overrides:
+      remove_cameras: False
+  controller:
+    policy: !ReplayPolicyConfig
+      episode_file: NEEDS_OVERWRITE
+      skill: *skill
+
+DiffusionInProcessSim: !MultiarmScenarioConfig
+  env: !HardwareStationScenarioSimulationEnvConfig
+    <<: *hardware_sim_env
+    t_max: *t_max
+    user_input: !UserInputNoneConfig {}
+    simulation_scenario_config: !SimulationScenarioConfig
+      <<: *scenario_config
+      # Disable LCM visualization; remove the realtime rate override.
+      scenario_text: '{ lcm_buses: { visualizer_bus: { lcm_url: memq://null } } }'
+    camera_overrides:
+      remove_cameras: False
+  controller:
+    policy: !DiffusionPolicyConfig
+      checkpoint_file: NEEDS_OVERWRITE
+      num_open_loop_steps: null
+      # N.B. This is actually a "convert" action, not a restore action. It
+      # converts the neural network's flat output to a structured
+      # PosesAndGrippers format.
+      restore_action: !RestorePosesAndGrippersConfig
+        model_names: *diff_ik_names
+        gripper_names: *gripper_names
+      skill: *skill
+      require_all_images: False
+
+NoOp: !MultiarmScenarioConfig
+  env: !HardwareStationScenarioSimulationEnvConfig
+    <<: *hardware_sim_env
+    user_input: !UserInputNoneConfig {}
+    simulation_scenario_config: !SimulationScenarioConfig
+      <<: *scenario_config
+      # Disable LCM visualization; remove the realtime rate override.
+      scenario_text: '{ lcm_buses: { visualizer_bus: { lcm_url: memq://null } } }'
+    camera_overrides:
+      remove_cameras: False
+  controller:
+    policy: !MultiarmNoopPolicyConfig
+      skill: *skill

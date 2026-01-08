@@ -1,0 +1,15 @@
+directives:
+- add_frame:
+    name: panda_hand::finger_screw
+    X_PF:
+      base_frame: panda_hand::panda_hand
+      # I think this is from 0.0584 + 0.012, 0.0584 is finger prismatic z
+      # offset from hand link.
+      translation: [0, 0, 0.0704]
+      rotation: !Rpy { deg: [0, 0, 0] }
+- add_frame:
+    name: panda_hand::calib_tip
+    X_PF:
+      base_frame: panda_hand::finger_screw
+      translation: [0, 0, 0.024]
+      rotation: !Rpy { deg: [0, 0, 0] }

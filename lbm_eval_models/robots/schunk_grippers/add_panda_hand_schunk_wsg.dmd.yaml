@@ -1,0 +1,53 @@
+directives:
+
+# Requires `add_panda_flange_rotated.dmd.yaml`
+
+- add_model:
+    name: panda_schunk_wsg_flange
+    file: package://lbm_eval_models/robots/schunk_grippers/panda_schunk_wsg_flange.sdf
+- add_model:
+    # N.B. This name is kept as `panda_hand` to simplify backwards
+    # compatibility with existing data.
+    name: panda_hand
+    file: package://lbm_eval_models/robots/schunk_grippers/schunk_wsg_50_finray_actuated_planning.urdf
+- add_weld:
+    parent: panda::flange_rotated
+    child: panda_schunk_wsg_flange::mount_to_panda_wrist
+- add_frame:
+    name: panda_hand::_mount_to_gripper_rotated
+    X_PF:
+      base_frame: panda_schunk_wsg_flange::mount_to_gripper
+      rotation: !Rpy { deg: [0, 0, 0] }
+- add_weld:
+    parent: panda_hand::_mount_to_gripper_rotated
+    child: panda_hand::gripper
+
+# Appease RobotModelsAndInterfaces.
+# TODO(eric.cousineau): Make this something useful, or remove it.
+- add_frame:
+    name: panda_hand::grasp_frame
+    X_PF:
+      base_frame: panda_hand::gripper
+- add_frame:
+    name: panda_hand::panda_hand
+    X_PF:
+      base_frame: panda_hand::gripper
+
+- add_collision_filter_group:
+    name: gripper_filter_group
+    members:
+    - panda_hand::gripper
+    - panda_hand::left_finger
+    - panda_hand::right_finger
+    ignored_collision_filter_groups:
+    - panda_wrist_filter_group
+
+- add_collision_filter_group:
+    name: finger_filter_group
+    members:
+    - panda_hand::left_finger
+    - panda_hand::right_finger
+
+# For calibration.
+- add_directives:
+    file: package://lbm_eval_models/robots/schunk_grippers/add_schunk_calib_tip.dmd.yaml

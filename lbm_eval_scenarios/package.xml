@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lbm_eval_scenarios</name>
+  <version>0.0.0</version>
+  <description>
+    This package provides scenarios for LBM Eval.
+  </description>
+  <license>MIT OR Apache-2.0</license>
+</package>

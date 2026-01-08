@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="panda_schunk_wsg_flange">
+
+    <link name="body">
+      <inertial>
+        <!-- Weighed on scale -->
+        <mass>0.104</mass>
+        <!-- Using fix_inertia based on visuals -->
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>3.8081e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>3.8081e-05</iyy>
+          <iyz>0</iyz>
+          <izz>7.3233e-05</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="two_plates_estimate">
+        <geometry>
+          <box>
+            <size>0.065 0.065 0.013</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+
+    <frame name="mount_to_panda_wrist">
+      <pose>0.0 0.0 0  0 0 -0.0065</pose>
+    </frame>
+    <frame name="mount_to_gripper">
+    <pose>0.0 0.0 0  0 0 0.0065</pose>
+    </frame>
+  </model>
+</sdf>

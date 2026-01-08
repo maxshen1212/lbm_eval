@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="oxo_stainless_flexible_turner">
+    <link name="oxo_stainless_flexible_turner">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.143 0 0.0553 0 0 0</pose>
+        <mass>0.0693</mass>
+        <inertia>
+          <ixx> 0.000041</ixx>
+          <ixy> 0.000000</ixy>
+          <ixz>-0.000065</ixz>
+          <iyy> 0.000168</iyy>
+          <iyz> 0.000000</iyz>
+          <izz> 0.000138</izz>
+        </inertia>
+      </inertial>
+      <visual name="oxo_stainless_flexible_turner">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/spatulas/assets/oxo_stainless_flexible_turner.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="oxo_stainless_flexible_turner_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/spatulas/assets/oxo_stainless_flexible_turner_low.vtk</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.15</drake:mu_dynamic>
+          <drake:mu_static>0.15</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>0.5</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+    </link>
+    <frame name="origin">
+      <pose relative_to="oxo_stainless_flexible_turner">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="scooper_bounding_box_center__z_up">
+      <pose relative_to="oxo_stainless_flexible_turner">0 0 0 0 0 0</pose>
+    </frame>
+    <!-- Estimated empirically -->
+    <!-- Orientation set to match the orientation of the matching
+         lifelong/spatula/spatula_oxo_nylon_zzz_template.xacro
+         frame definition -->
+    <frame name="center_of_hole_in_handle">
+      <pose relative_to="origin">0.188 0 0.082 0 1.0 0</pose>
+    </frame>
+    <!-- The pose of the object when it is at rest on the table surface.
+         I.e. if spawned with this frame on the table surface at (0, 0, 0) it
+         will not move (approximately). It is also approximately centered such
+         that if it was rotated around the table z-axis, it would sweep out a
+         minimal circle.
+    -->
+    <frame name="at_rest_right_side_up">
+      <pose relative_to="scooper_bounding_box_center__z_up">0.08 0 0.01 0 -0.52 0</pose>
+    </frame>
+  </model>
+</sdf>

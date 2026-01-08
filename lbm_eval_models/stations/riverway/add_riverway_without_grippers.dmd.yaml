@@ -1,0 +1,168 @@
+directives:
+# Add the station (w/o table).
+- add_model:
+    name: riverway_station
+    file: package://lbm_eval_models/stations/franka_station/riverway_station.sdf
+
+  # Add the table, and weld the table-top center frame to the world.
+- add_model:
+    name: manipuland_table
+    file: package://lbm_eval_models/stations/franka_station/station_natural_brown_table_top_compliant.sdf
+- add_frame:
+    name: manipuland_table::table_top_center
+    X_PF:
+      base_frame: manipuland_table::origin
+      translation: [0, 0, 0]
+      rotation: !Rpy { deg: [0, 0, 0] }
+- add_weld:
+    parent: world
+    child: manipuland_table::table_top_center
+
+# Weld the table-cart to the table top center.
+- add_frame:
+    name: table_cart_weld_to_frame
+    X_PF:
+      base_frame: riverway_station::station_table_cart
+      translation: [ 0, 0, 0.147 ]  # The z-coordinate here is adjustable
+      rotation: !Rpy { deg: [ 0, 0, 135 ] }
+- add_weld:
+    parent: manipuland_table::table_top_center
+    child: table_cart_weld_to_frame
+
+# Add the right arm gantry, and weld it to the right arm-cart
+- add_model:
+    name: riverway_station_arm_cart_gantry_right
+    file: package://lbm_eval_models/stations/franka_station/station_arm_cart_gantry.sdf
+- add_frame:
+    name: right_arm_cart_gantry_weld_frame
+    X_PF:
+      base_frame: riverway_station::station_arm_cart_right
+      translation: [ 0, -0.012, 0 ]  # The y-coordinate here is adjustable (fore(+)/aft(-))
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: right_arm_cart_gantry_weld_frame
+    child: riverway_station_arm_cart_gantry_right::station_arm_cart_gantry
+
+# Add the right base plate, and weld it to the gantry
+- add_model:
+    name: riverway_station_gantry_base_plate_right
+    file: package://lbm_eval_models/stations/franka_station/station_gantry_base_plate.sdf
+- add_frame:
+    name: gantry_base_plate_weld_frame_right
+    X_PF:
+      base_frame: riverway_station_arm_cart_gantry_right::station_arm_cart_gantry
+      translation: [ 0.185, 0, 0.041 ]  # the x-coordinate here is adjustable
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: gantry_base_plate_weld_frame_right
+    child: riverway_station_gantry_base_plate_right::station_gantry_base_plate
+
+# Right arm.
+- add_model_instance:
+    name: right
+- add_model:
+    name: right::panda
+    file: package://drake_models/franka_description/urdf/panda_arm_link5split.urdf
+- add_directives:
+    model_namespace: right
+    file: package://lbm_eval_models/robots/panda_arms/add_panda_arm_extras.dmd.yaml
+# - Anchor right arm according to frozen calibration snapshot on 2024-10-28.
+- add_frame:
+    name: _manipuland_table_top_center_from_right_panda
+    X_PF:
+      base_frame: right::panda::origin
+      translation: [0.6586, 0.1647, 0.1038]
+      rotation: !Rpy { deg: [-0.8804, -1.7438, 42.9643] }
+- add_weld:
+    parent: manipuland_table::table_top_center
+    child: _manipuland_table_top_center_from_right_panda
+
+# Add the left arm gantry, and weld it to the left arm-cart
+- add_model:
+    name: riverway_station_arm_cart_gantry_left
+    file: package://lbm_eval_models/stations/franka_station/station_arm_cart_gantry.sdf
+- add_frame:
+    name: left_arm_cart_gantry_weld_frame
+    X_PF:
+      base_frame: riverway_station::station_arm_cart_left
+      translation: [ 0, -0.019, 0 ]  # The y-coordinate here is adjustable (fore(+)/aft(-))
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: left_arm_cart_gantry_weld_frame
+    child: riverway_station_arm_cart_gantry_left::station_arm_cart_gantry
+
+# Add the left base plate, and weld it to the gantry
+- add_model:
+    name: riverway_station_gantry_base_plate_left
+    file: package://lbm_eval_models/stations/franka_station/station_gantry_base_plate.sdf
+- add_frame:
+    name: gantry_base_plate_weld_frame_left
+    X_PF:
+      base_frame: riverway_station_arm_cart_gantry_left::station_arm_cart_gantry
+      translation: [ -0.1675, 0, 0.041 ]  # the x-coordinate here is adjustable
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: gantry_base_plate_weld_frame_left
+    child: riverway_station_gantry_base_plate_left::station_gantry_base_plate
+
+# Left arm.
+- add_model_instance:
+    name: left
+- add_model:
+    name: left::panda
+    file: package://drake_models/franka_description/urdf/panda_arm_link5split.urdf
+- add_directives:
+    model_namespace: left
+    file: package://lbm_eval_models/robots/panda_arms/add_panda_arm_extras.dmd.yaml
+# - Anchor this arm according to frozen calibration snapshot on 2024-10-28.
+- add_frame:
+    name: _manipuland_table_top_center_from_left_panda
+    X_PF:
+      base_frame: left::panda::origin
+      translation: [0.6561, -0.1959, 0.0944]
+      rotation: !Rpy { deg: [-0.3500, -1.1269, -46.7960] }
+- add_weld:
+    parent: manipuland_table::table_top_center
+    child: _manipuland_table_top_center_from_left_panda
+
+# Add camera(s).
+# Scene camera 6CD146030E96 per frozen calibration snapshot on 2024-11-11.
+- add_frame:
+    name: camera_6CD146030E96
+    X_PF:
+      base_frame: manipuland_table::table_top_center
+      translation: [0.5475459165740518, 0.18739323059527133, 0.8359720915694936]
+      rotation: !Rpy { deg: [-144.02622026208346, 7.175918743777246, 99.05897849355833] }
+- add_model:
+    name: camera_6CD146030E96_model
+    file: package://lbm_eval_models/stations/cameras/framos_d415e_keepout.sdf
+- add_weld:
+    parent: camera_6CD146030E96
+    child: camera_6CD146030E96_model::rgb
+# Scene camera 6CD146030E9E per frozen calibration snapshot on 2024-11-11.
+- add_frame:
+    name: camera_6CD146030E9E
+    X_PF:
+      base_frame: manipuland_table::table_top_center
+      translation: [0.4971372129776017, -0.36177129391458523, 0.7787723308545904]
+      rotation: !Rpy { deg: [-143.5224306152587, -17.515017743503677, 73.93604661555008] }
+- add_model:
+    name: camera_6CD146030E9E_model
+    file: package://lbm_eval_models/stations/cameras/framos_d415e_keepout.sdf
+- add_weld:
+    parent: camera_6CD146030E9E
+    child: camera_6CD146030E9E_model::rgb
+# Wrist camera 6CD146030AFC per frozen calibration snapshot on 2024-04-09.
+- add_frame:
+    name: camera_6CD146030AFC
+    X_PF:
+      base_frame: right::panda::panda_link8
+      translation: [-0.05, 0.05, 0.01]
+      rotation: !Rpy { deg: [-20, 0, -135] }
+# Wrist camera 6CD146030B09 per frozen calibration snapshot on 2024-04-09.
+- add_frame:
+    name: camera_6CD146030B09
+    X_PF:
+      base_frame: left::panda::panda_link8
+      translation: [0.05, -0.05, 0.01]
+      rotation: !Rpy { deg: [-20, 0, 45] }

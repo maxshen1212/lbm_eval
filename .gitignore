@@ -1,0 +1,12 @@
+
+__pycache__/
+*.py[cod]
+*$py.class
+**/__pycache__/
+
+scratch.py 
+run_eval.sh
+output/ 
+
+*.dist-info/
+*.whl

@@ -9,6 +9,8 @@ import copy
 import uuid
 import warnings
 
+import os 
+import imageio
 import numpy as np
 
 from grpc_workspace.lbm_policy_server import (
@@ -33,22 +35,43 @@ class WaveAround(Policy):
     """A trivial demonstration policy that waves the arms."""
 
     def __init__(self):
+        print(f"[WaveAround] __init__")
         self.reset()
 
     def reset(self):
         self._counter = 0
         self._initial_poses = None
+        print(f"[WaveAround] reset")
+
 
     def get_policy_metadata(self):
         return _get_policy_metadata()
 
     def step(self, observation: MultiarmObservation) -> PosesAndGrippers:
+        print(f"[WaveAround step] timestep: {self._counter}")
         if self._initial_poses is None:
             self._initial_poses = copy.deepcopy(observation.robot.actual.poses)
 
         grippers = copy.deepcopy(observation.robot.actual.grippers)
         poses = copy.deepcopy(self._initial_poses)
-        offset = np.sin(self._counter * 0.1 * np.array([0.02, 0.03, 0.05]))
+
+        ###===###
+        # observations_savedir = "observations" 
+        # obs_file = os.path.join(observations_savedir, f"obs_{self._counter}.pkl")
+        # os.makedirs(os.path.dirname(obs_file), exist_ok=True)
+        # save_to_pickle(obs_file, observation)
+
+        # camera_name = "scene_right_0"
+        # right_scene_image = observation.visuo[camera_name].rgb.array
+        # self._frames.append(right_scene_image)
+        # images_savedir = "output/images"
+        # im_file = os.path.join(images_savedir, camera_name, f"image_{self._counter:03d}.png")
+        # os.makedirs(os.path.dirname(im_file), exist_ok=True)
+        # imageio.imwrite(im_file, right_scene_image)
+        ###---###
+
+        # offset = np.sin(self._counter * 0.1 * np.array([0.02, 0.03, 0.05])) ###===###
+        offset = np.sin(self._counter * 0.5 * np.array([0.02, 0.03, 0.05])) ###---###
         for robot_name, pose in self._initial_poses.items():
             observed_xyz = self._initial_poses[robot_name].translation()
             poses[robot_name].set_translation(observed_xyz + offset)

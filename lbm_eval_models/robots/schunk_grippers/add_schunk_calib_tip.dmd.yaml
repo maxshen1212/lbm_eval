@@ -1,0 +1,7 @@
+directives:
+- add_frame:
+    name: panda_hand::calib_tip
+    X_PF:
+      base_frame: panda::flange_rotated
+      translation: [0, 0, 0.1246]
+      rotation: !Rpy { deg: [0, 0, 0] }

@@ -1,0 +1,36 @@
+directives:
+
+# Requires `add_panda_flange_rotated.dmd.yaml`.
+
+- add_model:
+    name: panda_hand
+    file: package://lbm_eval_models/robots/panda_hands/panda_hand_actuated.urdf
+- add_weld:
+    parent: panda::flange_rotated
+    child: panda_hand::panda_hand
+- add_frame:
+    name: panda_hand::grasp_frame
+    X_PF:
+      base_frame: panda_hand::panda_finger_tip_center
+      translation: [0, 0, 0]
+      rotation: !Rpy { deg: [180, 0, 0] }
+
+- add_collision_filter_group:
+    name: gripper_filter_group
+    members:
+    - panda::panda_link7
+    - panda::panda_link8
+    - panda_hand::panda_hand
+    - panda_hand::panda_leftfinger
+    - panda_hand::panda_rightfinger
+    ignored_collision_filter_groups:
+    - gripper_filter_group
+
+- add_collision_filter_group:
+    name: finger_filter_group
+    members:
+    - panda_hand::panda_leftfinger
+    - panda_hand::panda_rightfinger
+
+- add_directives:
+    file: package://lbm_eval_models/robots/panda_hands/add_panda_hand_calib_tip.dmd.yaml

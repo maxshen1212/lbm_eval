@@ -14,6 +14,35 @@ Note that this software is newer than the version used in the published paper.
 version is a snapshot from Fall 2025.) This newer version will not necessarily
 reproduce the results in the paper.
 
+## New instructions 
+
+### Installation
+```
+conda create -n lbm_eval python=3.12
+conda activate lbm_eval
+pip install -r requirements.txt
+```
+
+### Running dummy policy 
+
+In one terminal, run 
+```
+python3 -m grpc_workspace.wave_around_policy_server
+```
+
+Open a second terminal and run 
+```
+python3 -m lbm_eval.evaluate \
+--skill_type=pick_and_place_box \
+--num_evaluations=1 \
+--num_processes=1 \
+--output_dir=output
+```
+
+Follow the template of `grpc_workspace/wave_around_policy_server.py` to write a policy server class for your own policies. 
+
+See the rest of the README below for further instructions on different evaluation options. 
+
 ## Getting Started with `lbm_eval`
 
 ### Prerequisites

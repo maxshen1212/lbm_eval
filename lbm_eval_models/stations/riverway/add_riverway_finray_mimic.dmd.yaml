@@ -1,0 +1,14 @@
+# This is the station model used for simulation.
+# TODO(imcmahon) Rename this file to add_riverway_simulation.dmd.yaml.
+
+directives:
+- add_directives:
+    file: package://lbm_eval_models/stations/riverway/add_riverway_without_grippers.dmd.yaml
+
+  # - Add finray grippers with mimic finger joint.
+- add_directives:
+    model_namespace: right
+    file: package://lbm_eval_models/robots/panda_hands/add_panda_hand_finray_mimic.dmd.yaml
+- add_directives:
+    model_namespace: left
+    file: package://lbm_eval_models/robots/panda_hands/add_panda_hand_finray_mimic.dmd.yaml

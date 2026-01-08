@@ -60,6 +60,20 @@ def add_default_anzu_packages(package_map: PackageMap) -> None:
         # isn't a venv, this is a no-op (not an error).
         _add_venv_packages(package_map)
 
+###===###
+def _add_local_packages(package_map: PackageMap) -> None:
+    """Adds to the given map any packages found in a glob of the same venv
+    site-packages directory as anzu is installed into.
+    """
+    site_packages = anzu_package_xml_path().parent.parent
+    # if site_packages.name != "site-packages":
+    #     return
+    for filename in glob.glob(f"{site_packages}/*/package.xml"):
+        try:
+            package_map.AddPackageXml(filename)
+        except Exception:
+            pass
+###---###
 
 def MakeDefaultAnzuPackageMap() -> PackageMap:
     """Creates a PackageMap with add_default_anzu_packages() already added.
@@ -68,4 +82,7 @@ def MakeDefaultAnzuPackageMap() -> PackageMap:
     # N.B. Keep this function in sync with anzu_model_directives.cc.
     result = PackageMap()
     add_default_anzu_packages(package_map=result)
+
+    _add_local_packages(result) ###===### ###---###
+
     return result

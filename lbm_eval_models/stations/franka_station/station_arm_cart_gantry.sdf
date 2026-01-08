@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="station_arm_cart_gantry">
+    <link name="station_arm_cart_gantry">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <!-- These are just placeholder inertial values, since this body is
+        fixed to the world-->
+        <pose>5.43e-05 -0.0196 0.0505 0 0 0</pose>
+        <mass>0.136</mass>
+        <inertia>
+          <ixx> 0.000109</ixx>
+          <ixy>-0.000000</ixy>
+          <ixz> 0.000000</ixz>
+          <iyy> 0.000128</iyy>
+          <iyz>-0.000000</iyz>
+          <izz> 0.000054</izz>
+        </inertia>
+      </inertial>
+      <visual name="station_arm_cart_gantry">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/stations/franka_station/assets/station_arm_cart_gantry.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="arm_cart_gantry_back_horizontal_plate_collision_box">
+        <pose>0.32198 0.0 0.00616 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.041 0.16 0.01232</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_back_knob_collision_box">
+        <pose>0.32506 -0.00053 0.05152 -0.28116 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.01 0.07975 0.01445</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_back_knob_collision_cylinder">
+        <pose>0.32506 0.04 0.03105 0.0 -0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.00962</radius>
+            <length>0.03747</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_back_rail_collision_box">
+        <pose>0.27 0.0 0.02132 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.14 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_back_vertical_plate_collision_box">
+        <pose>0.29574 0.0 -0.04033 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.01148 0.16 0.14331</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_front_horizontal_plate_collision_box">
+        <pose>-0.32198 0.0 0.00616 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.041 0.16 0.01232</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_front_knob_collision_box">
+        <pose>-0.32506 -0.00053 0.05152 -0.28116 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.01 0.07975 0.01445</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_front_knob_collision_cylinder">
+        <pose>-0.32506 0.04 0.03105 0.0 -0.0 0.0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.00962</radius>
+            <length>0.03747</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_front_rail_collision_box">
+        <pose>-0.27 0.0 0.02132 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.14 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_front_vertical_plate_collision_box">
+        <pose>-0.29574 0.0 -0.04033 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.01148 0.16 0.14331</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_left_rail_collision_box">
+        <pose>0.0 0.09 0.02132 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.58 0.04 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_gantry_right_rail_collision_box">
+        <pose>0.0 -0.09 0.02132 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.58 0.04 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <frame name="origin">
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

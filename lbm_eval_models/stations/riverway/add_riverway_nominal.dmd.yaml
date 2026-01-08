@@ -1,0 +1,16 @@
+# This is the station model used for planning and control.
+
+directives:
+- add_directives:
+    file: package://lbm_eval_models/stations/riverway/add_riverway_without_grippers.dmd.yaml
+
+# - Add hands (nominal grippers).
+- add_directives:
+    model_namespace: right
+    file: package://lbm_eval_models/robots/panda_hands/add_panda_hand_nominal.dmd.yaml
+- add_directives:
+    model_namespace: left
+    file: package://lbm_eval_models/robots/panda_hands/add_panda_hand_nominal.dmd.yaml
+
+- add_directives:
+    file: package://lbm_eval_models/stations/riverway/filter_finger_table_collisions.dmd.yaml

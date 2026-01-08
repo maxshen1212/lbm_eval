@@ -1,0 +1,16 @@
+# Adds some additional frames + filter groups to a Panda arm for use with
+# visuomotor models.
+directives:
+- add_frame:
+    name: panda::origin
+    X_PF:
+      base_frame: panda::panda_link0
+- add_directives:
+    file: package://lbm_eval_models/robots/panda_arms/add_panda_flange_rotated.dmd.yaml
+- add_collision_filter_group:
+    name: panda_wrist_filter_group
+    members:
+    - panda::panda_link5_upper
+    - panda::panda_link6
+    - panda::panda_link7
+    - panda::panda_link8

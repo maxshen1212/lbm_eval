@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------------
+
+Four files in this directory are governed by a specific license other than the
+default LBM Eval license:
+
+- panda_hand_actuated.urdf
+- panda_hand_finray_actuated_mesh_mimic.urdf.xacro
+- panda_hand_finray_actuated_spheres.urdf.xacro
+- assets/panda_hand_finray_actuated_template.urdf.xacro
+
+These files were originally based on the Franka ROS package, available at:
+https://github.com/frankaemika/franka_ros/tree/kinetic-devel/franka_description
+SHA d7cd447344.
+
+The license for these files is the Apache 2.0 license
+https://github.com/frankaemika/franka_ros/blob/kinetic-devel/LICENSE
+https://github.com/frankaemika/franka_ros/blob/kinetic-devel/franka_ros/package.xml
+
+The inertial properties for the arm/hand were copied from
+https://github.com/mkrizmancic/franka_gazebo which also uses the
+Apache 2.0 license.
+
+-------------------------------------------------------------------------------
+
+The remaining files in this directory and all subdirectories are covered by the
+default license terms of LBM Eval.
+
+-------------------------------------------------------------------------------

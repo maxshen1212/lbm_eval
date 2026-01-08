@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="oxo_plastic_cutting_board">
+    <link name="oxo_plastic_cutting_board">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0.00638 0 0 0</pose>
+        <mass>0.0697</mass>
+        <inertia>
+          <ixx> 0.00080</ixx>
+          <ixy> 0.00000</ixy>
+          <ixz> 0.00000</ixz>
+          <iyy> 0.00041</iyy>
+          <iyz>-0.00000</iyz>
+          <izz> 0.00121</izz>
+        </inertia>
+      </inertial>
+      <visual name="oxo_plastic_cutting_board">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/kitchen_accessories/cutting_boards/assets/oxo_plastic_cutting_board.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="oxo_plastic_cutting_board_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/kitchen_accessories/cutting_boards/assets/oxo_plastic_cutting_board_low.vtk</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.15</drake:mu_dynamic>
+          <drake:mu_static>0.15</drake:mu_static>
+          <drake:hydroelastic_modulus>1e8</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+    </link>
+    <frame name="origin">
+      <pose relative_to="oxo_plastic_cutting_board">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="surface_top_center">
+      <pose relative_to="oxo_plastic_cutting_board">0 0.0025 0.0104 0 0 0</pose>
+    </frame>
+    <frame name="cutting_board_bounding_box_bottom__z_up">
+      <pose relative_to="oxo_plastic_cutting_board">0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<sdf version="1.6" xmlns:drake="http://drake.mit.edu">
+  <model name="torus">
+    <link name="torus">
+      <inertial>
+        <inertia>
+        <!--Set arbitrarily small mass/inertia values, since this is currently
+        intended to be a visual-only model.-->
+          <ixx>1e-06</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-06</iyy>
+          <iyz>0</iyz>
+          <izz>1e-06</izz>
+        </inertia>
+        <mass>1e-6</mass>
+      </inertial>
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+            <mesh>
+              <!-- glTF model copied from anzu/models/occluders/torus.gltf,
+              with the texture PNG modified to a solid black color. -->
+              <uri>/home/ubuntu/lbm_eval/lbm_eval_models/fictional/markers/assets/torus.gltf</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <frame name="origin">
+      <pose relative_to="torus">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="center">
+      <pose relative_to="torus">0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

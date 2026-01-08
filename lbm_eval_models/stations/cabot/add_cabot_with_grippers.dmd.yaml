@@ -1,0 +1,11 @@
+directives:
+- add_directives:
+    file: package://lbm_eval_models/stations/cabot/add_cabot_without_grippers.dmd.yaml
+
+# Add finray grippers.
+- add_directives:
+    model_namespace: right
+    file: package://lbm_eval_models/robots/schunk_grippers/add_flir_schunk_wsg_mimic_simulation.dmd.yaml
+- add_directives:
+    model_namespace: left
+    file: package://lbm_eval_models/robots/schunk_grippers/add_flir_schunk_wsg_mimic_simulation.dmd.yaml

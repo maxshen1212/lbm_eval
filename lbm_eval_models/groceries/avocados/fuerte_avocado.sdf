@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="fuerte_avocado">
+    <link name="fuerte_avocado">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1e-07 1.2e-06 -7e-07 0 0 0</pose>
+        <mass>0.201</mass>
+        <inertia>
+          <ixx> 0.000147</ixx>
+          <ixy>-0.000002</ixy>
+          <ixz> 0.000004</ixz>
+          <iyy> 0.000147</iyy>
+          <iyz> 0.000001</iyz>
+          <izz> 0.000073</izz>
+        </inertia>
+      </inertial>
+      <visual name="fuerte_avocado">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/groceries/avocados/assets/fuerte_avocado.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="fuerte_avocado_collision">
+        <pose>0.0 0.0 0.0 0.0 0.0 -0.0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/groceries/avocados/assets/fuerte_avocado_low.vtk</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+        <drake:proximity_properties>
+          <drake:mu_dynamic>0.5</drake:mu_dynamic>
+          <drake:mu_static>0.5</drake:mu_static>
+          <drake:hydroelastic_modulus>1e7</drake:hydroelastic_modulus>
+          <drake:hunt_crossley_dissipation>40</drake:hunt_crossley_dissipation>
+          <drake:compliant_hydroelastic/>
+        </drake:proximity_properties>
+      </collision>
+    </link>
+    <frame name="origin">
+      <pose relative_to="fuerte_avocado">0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="mass_center__z_up">
+      <pose relative_to="fuerte_avocado">0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

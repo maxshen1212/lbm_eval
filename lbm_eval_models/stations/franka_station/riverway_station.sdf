@@ -1,0 +1,705 @@
+<?xml version="1.0"?>
+<sdf version="1.7" xmlns:drake="drake.mit.edu">
+  <model name="riverway_station">
+    <link name="station_arm_cart_right">
+      <pose>0 -0.6896 -0.099295 0 0 0</pose>
+      <inertial>
+        <!-- These are just placeholder inertial values, since this body is
+        fixed to the world-->
+        <pose>5.43e-05 -0.0196 0.0505 0 0 0</pose>
+        <mass>0.136</mass>
+        <inertia>
+          <ixx> 0.000109</ixx>
+          <ixy>-0.000000</ixy>
+          <ixz> 0.000000</ixz>
+          <iyy> 0.000128</iyy>
+          <iyz>-0.000000</iyz>
+          <izz> 0.000054</izz>
+        </inertia>
+      </inertial>
+      <visual name="station_arm_cart_right">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+          <uri>/home/ubuntu/lbm_eval/lbm_eval_models/stations/franka_station/assets/station_arm_cart.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="arm_cart_back_right_wheel_collision_box">
+        <pose>0.29638 0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_back_right_wheel_collision_box.001">
+        <pose>0.29638 -0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_bottom_collision_box">
+        <pose>0.0 0.0 -0.42048 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.6896 0.6896 0.05905</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_franka_control_collision_box">
+        <pose>-0.1688 0.0 -0.34845 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.357 0.478 0.085</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_front_left_wheel_collision_box">
+        <pose>-0.29638 0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_front_right_wheel_collision_box">
+        <pose>-0.29638 -0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_back_collision_box">
+        <pose>0.3248 0.0 -0.04 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_front_collision_box">
+        <pose>-0.3248 0.0 -0.04 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_left_collision_box">
+        <pose>0.0 0.3248 -0.04 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_right_collision_box">
+        <pose>0.0 -0.3248 -0.04 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_back_left_collision_box">
+        <pose>0.3248 0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_back_right_collision_box">
+        <pose>0.3248 -0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_front_left_collision_box">
+        <pose>-0.3248 0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_front_right_collision_box">
+        <pose>-0.3248 -0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <link name="station_arm_cart_left">
+      <pose>0.6896 0 -0.099295 0 0 1.5708</pose>
+      <inertial>
+        <!-- These are just placeholder inertial values, since this body is
+        fixed to the world-->
+        <pose>5.43e-05 -0.0196 0.0505 0 0 0</pose>
+        <mass>0.136</mass>
+        <inertia>
+          <ixx> 0.000109</ixx>
+          <ixy>-0.000000</ixy>
+          <ixz> 0.000000</ixz>
+          <iyy> 0.000128</iyy>
+          <iyz>-0.000000</iyz>
+          <izz> 0.000054</izz>
+        </inertia>
+      </inertial>
+      <visual name="station_arm_cart_left">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/stations/franka_station/assets/station_arm_cart.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="arm_cart_back_right_wheel_collision_box">
+        <pose>0.29638 0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_back_right_wheel_collision_box.001">
+        <pose>0.29638 -0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_bottom_collision_box">
+        <pose>0.0 0.0 -0.42048 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.6896 0.6896 0.05905</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_franka_control_collision_box">
+        <pose>-0.1688 0.0 -0.34845 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.357 0.478 0.085</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_front_left_wheel_collision_box">
+        <pose>-0.29638 0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_front_right_wheel_collision_box">
+        <pose>-0.29638 -0.3024 -0.49143 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_back_collision_box">
+        <pose>0.3248 0.0 -0.04 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_front_collision_box">
+        <pose>-0.3248 0.0 -0.04 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_left_collision_box">
+        <pose>0.0 0.3248 -0.04 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_top_right_collision_box">
+        <pose>0.0 -0.3248 -0.04 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_back_left_collision_box">
+        <pose>0.3248 0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_back_right_collision_box">
+        <pose>0.3248 -0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_front_left_collision_box">
+        <pose>-0.3248 0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="arm_cart_vertical_front_right_collision_box">
+        <pose>-0.3248 -0.3248 -0.19548 0.0 -0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.39095</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <link name="station_table_cart">
+      <pose>0 0 -0.099295 0 0 0</pose>
+      <inertial>
+        <!-- These are just placeholder inertial values, since this body is
+        fixed to the world-->
+        <pose>5.43e-05 -0.0196 0.0505 0 0 0</pose>
+        <mass>0.136</mass>
+        <inertia>
+          <ixx> 0.000109</ixx>
+          <ixy>-0.000000</ixy>
+          <ixz> 0.000000</ixz>
+          <iyy> 0.000128</iyy>
+          <iyz>-0.000000</iyz>
+          <izz> 0.000054</izz>
+        </inertia>
+      </inertial>
+      <visual name="station_table_cart">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/stations/franka_station/assets/station_table_cart.gltf</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="camera_left_collision_base_box">
+        <pose>-0.6483 0.24775 1.12349 2.10351 0.0 0.77681</pose>
+        <geometry>
+          <box>
+            <size>0.043 0.08951 0.09998</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_box">
+        <pose>-0.62256 0.17861 1.19346 0.41602 -0.34462 1.48384</pose>
+        <geometry>
+          <box>
+            <size>0.01822 0.06427 0.03147</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_box.001">
+        <pose>-0.60212 0.18475 1.20887 1.60122 0.14737 2.35535</pose>
+        <geometry>
+          <box>
+            <size>0.01645 0.02924 0.00436</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_box.002">
+        <pose>-0.60691 0.21 1.24482 -0.76817 -3.1115 0.78009</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.061 0.0125</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_cylinder">
+        <pose>-0.63246 0.23165 1.17896 0.39937 -0.36251 1.4756</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.02719</radius>
+            <length>0.027</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_cylinder.001">
+        <pose>-0.63384 0.26364 1.20028 1.0371 -0.05908 3.9388</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01621</radius>
+            <length>0.04376</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_cylinder.002">
+        <pose>-0.66134 0.19597 1.2144 1.0361 -0.08284 3.95291</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01942</radius>
+            <length>0.05538</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_cylinder.003">
+        <pose>-0.58224 0.19875 1.18098 1.60155 0.20861 2.35726</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01951</radius>
+            <length>0.054</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_left_collision_cylinder.004">
+        <pose>-0.62448 0.22857 1.24092 -0.7681 -3.10939 0.77792</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01747</radius>
+            <length>0.0165</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_left_main_camera_collision_box">
+        <pose>-0.57919 0.19384 1.26633 0.90171 -0.01125 0.77134</pose>
+        <geometry>
+          <box>
+            <size>0.10113 0.044 0.059</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_base_box">
+        <pose>-0.0755 0.83854 1.11225 0.0 -0.0 2.34761</pose>
+        <geometry>
+          <box>
+            <size>0.12543 0.04391 0.08894</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_box">
+        <pose>-0.04785 0.82398 1.20889 0.76533 -0.00049 4.32723</pose>
+        <geometry>
+          <box>
+            <size>0.03037 0.01785 0.00998</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_box.001">
+        <pose>0.03449 0.84372 1.23151 2.10765 0.20231 1.14393</pose>
+        <geometry>
+          <box>
+            <size>0.01645 0.02435 0.00436</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_box.002">
+        <pose>5e-05 0.83873 1.21866 0.33572 0.41994 0.33522</pose>
+        <geometry>
+          <box>
+            <size>0.06045 0.0174 0.03147</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_box.003">
+        <pose>0.07049 0.8551 1.24797 2.50526 -0.52475 2.5957</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.061 0.0125</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_cylinder">
+        <pose>-0.07268 0.83452 1.18505 0.01454 -0.01384 1.97093</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.02508</radius>
+            <length>0.05582</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_cylinder.001">
+        <pose>-0.10262 0.81584 1.20119 1.5703 -0.04117 -0.38514</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01613</radius>
+            <length>0.04978</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_cylinder.002">
+        <pose>-0.03679 0.80577 1.22888 1.48618 0.4637 -0.53989</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01817</radius>
+            <length>0.06419</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_cylinder.003">
+        <pose>0.03716 0.83417 1.19448 2.11498 0.25486 1.17631</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.019</radius>
+            <length>0.054</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_right_collision_cylinder.004">
+        <pose>0.08101 0.87355 1.2456 2.36673 -0.22771 2.96498</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.01747</radius>
+            <length>0.0165</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="camera_right_main_camera_collision_box">
+        <pose>0.06928 0.82109 1.2689 0.873 0.03764 -0.08842</pose>
+        <geometry>
+          <box>
+            <size>0.12 0.044 0.059</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_back_left_wheel_collision_box">
+        <pose>0.29638 0.3024 -0.49143 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_back_right_wheel_collision_box">
+        <pose>0.29638 -0.3024 -0.49143 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_back_collision_box">
+        <pose>0.3248 8e-05 -0.43 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.60977 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_front_collision_box">
+        <pose>-0.3248 8e-05 -0.43 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.60977 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_left_collision_box">
+        <pose>-8e-05 0.3248 -0.43 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.60977 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_pole_clamp_connector_collision_box">
+        <pose>-0.4598 0.44563 -0.41 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.17 0.04165 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_pole_connector_bracket_collision_b">
+        <pose>-0.38423 0.30537 -0.41 0.0 0.0 -0.78539</pose>
+        <geometry>
+          <box>
+            <size>0.11319 0.01 0.076</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_pole_connector_collision_box">
+        <pose>-0.4598 0.3848 -0.41 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.23 0.08 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_bottom_right_collision_box">
+        <pose>-8e-05 -0.3248 -0.43 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.60977 0.04</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_front_left_wheel_collision_box">
+        <pose>-0.29638 0.3024 -0.49143 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_front_right_wheel_collision_box">
+        <pose>-0.29638 -0.3024 -0.49143 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.11144 0.06997 0.08225</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_horizontal_camera_pole_collision_cylinder">
+        <pose>-0.4191 0.45009 1.10512 -2.34689 1.5708 1.57997</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.02511</radius>
+            <length>1.2192</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="table_cart_pole_clamp_collision_cylinder">
+        <pose>-0.41993 0.45054 1.10512 0.77547 1.5708 1.56059</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.03562</radius>
+            <length>0.07</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="table_cart_pole_clamp_collision_cylinder.001">
+        <pose>-0.45797 0.48665 1.10597 0.0 3.14159 0.7854</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.03562</radius>
+            <length>0.07</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_back_collision_box">
+        <pose>0.3248 0.0 -0.04 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_front_collision_box">
+        <pose>-0.3248 -0.0 -0.04 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_left_collision_box">
+        <pose>-0.0 0.3248 -0.04 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_pole_clamp_connector_collision_box">
+        <pose>-0.4598 0.44563 -0.04 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.17 0.04165 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_pole_connector_bracket_collision_box">
+        <pose>-0.38423 0.30537 -0.04 0.0 0.0 -0.78539</pose>
+        <geometry>
+          <box>
+            <size>0.11319 0.01 0.076</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_pole_connector_collision_box">
+        <pose>-0.4598 0.3848 -0.04 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.23 0.08 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_top_right_collision_box">
+        <pose>0.0 -0.3248 -0.04 0.0 -0.0 1.5708</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.6096 0.08</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_vertical_back_left_collision_box">
+        <pose>0.3248 0.3248 -0.22515 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.4503</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_vertical_back_right_collision_box">
+        <pose>0.3248 -0.3248 -0.22515 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.4503</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_vertical_camera_pole_collision_cylinder">
+        <pose>-0.4598 0.4875 0.4144 0.0 0.0 -0.0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.02511</radius>
+            <length>1.8288</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="table_cart_vertical_front_left_collision_box">
+        <pose>-0.3248 0.3248 -0.22515 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.4503</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="table_cart_vertical_front_right_collision_box">
+        <pose>-0.3248 -0.3248 -0.22515 0.0 0.0 -0.0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 0.4503</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='weld_joint_1' type='fixed'>
+      <parent>station_table_cart</parent>
+      <child>station_arm_cart_left</child>
+    </joint>
+    <joint name='weld_joint_2' type='fixed'>
+      <parent>station_table_cart</parent>
+      <child>station_arm_cart_right</child>
+    </joint>
+  </model>
+</sdf>

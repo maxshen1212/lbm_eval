@@ -1,0 +1,186 @@
+directives:
+# Add the station (w/o table).
+- add_model:
+    name: riverway_station
+    file: package://lbm_eval_models/stations/franka_station/riverway_station.sdf
+
+# Note the table is not included in this yaml because the intent is to
+# randomize the table's texture, and currently stochastic variables within
+# external model directive files are not handled (see
+# `sim/common/take_scenario_sample.py` for more information).
+
+# Weld the table-cart to the table top center.
+- add_frame:
+    name: table_cart_weld_to_frame
+    X_PF:
+      base_frame: riverway_station::station_table_cart
+      translation: [ 0, 0, 0.162 ]
+      rotation: !Rpy { deg: [ 0, 0, 135 ] }
+- add_weld:
+    parent: manipuland_table::table_top_center
+    child: table_cart_weld_to_frame
+
+# Add the right arm gantry, and weld it to the right arm-cart
+- add_model:
+    name: riverway_station_arm_cart_gantry_right
+    file: package://lbm_eval_models/stations/franka_station/station_arm_cart_gantry.sdf
+- add_frame:
+    name: right_arm_cart_gantry_weld_frame
+    X_PF:
+      base_frame: riverway_station::station_arm_cart_right
+      translation: [ 0, -0.075, 0 ]
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: right_arm_cart_gantry_weld_frame
+    child: riverway_station_arm_cart_gantry_right::station_arm_cart_gantry
+
+# Add the right base plate, and weld it to the gantry
+- add_model:
+    name: riverway_station_gantry_base_plate_right
+    file: package://lbm_eval_models/stations/franka_station/station_gantry_base_plate.sdf
+- add_frame:
+    name: gantry_base_plate_weld_frame_right
+    X_PF:
+      base_frame: riverway_station_arm_cart_gantry_right::station_arm_cart_gantry
+      translation: [ 0.185, 0, 0.041 ]
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: gantry_base_plate_weld_frame_right
+    child: riverway_station_gantry_base_plate_right::station_gantry_base_plate
+
+# Right arm.
+- add_model_instance:
+    name: right
+- add_model:
+    name: right::panda
+    file: package://drake_models/franka_description/urdf/panda_arm_link5split.urdf
+    default_joint_positions:
+      panda_joint6: [0.4]  # Don't start in self-collision.
+- add_directives:
+    model_namespace: right
+    file: package://lbm_eval_models/robots/panda_arms/add_panda_arm_extras.dmd.yaml
+- add_frame:
+    name: _manipuland_table_top_center_from_right_panda
+    X_PF:
+      base_frame: right::panda::origin
+      # Copied from data/stations/salem/add_manipuland_table_top_center_from_right_panda.dmd.yaml
+      # as of 2024-11-04 with git SHA d3ab8c1.
+      translation: [0.7292, 0.1655, 0.1295]
+      rotation: !Rpy { deg: [-0.6055, -1.1897, 41.5523] }
+- add_weld:
+    parent: manipuland_table::table_top_center
+    child: _manipuland_table_top_center_from_right_panda
+
+# Add the left arm gantry, and weld it to the left arm-cart
+- add_model:
+    name: riverway_station_arm_cart_gantry_left
+    file: package://lbm_eval_models/stations/franka_station/station_arm_cart_gantry.sdf
+- add_frame:
+    name: left_arm_cart_gantry_weld_frame
+    X_PF:
+      base_frame: riverway_station::station_arm_cart_left
+      translation: [ 0.015, -0.09, 0 ]
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: left_arm_cart_gantry_weld_frame
+    child: riverway_station_arm_cart_gantry_left::station_arm_cart_gantry
+
+# Add the left base plate, and weld it to the gantry
+- add_model:
+    name: riverway_station_gantry_base_plate_left
+    file: package://lbm_eval_models/stations/franka_station/station_gantry_base_plate.sdf
+- add_frame:
+    name: gantry_base_plate_weld_frame_left
+    X_PF:
+      base_frame: riverway_station_arm_cart_gantry_left::station_arm_cart_gantry
+      translation: [ -0.1675, 0, 0.041 ]
+      rotation: !Rpy { deg: [ 0, 0, 0 ] }
+- add_weld:
+    parent: gantry_base_plate_weld_frame_left
+    child: riverway_station_gantry_base_plate_left::station_gantry_base_plate
+
+# Left arm.
+- add_model_instance:
+    name: left
+- add_model:
+    name: left::panda
+    file: package://drake_models/franka_description/urdf/panda_arm_link5split.urdf
+    default_joint_positions:
+      panda_joint6: [0.4]  # Don't start in self-collision.
+- add_directives:
+    model_namespace: left
+    file: package://lbm_eval_models/robots/panda_arms/add_panda_arm_extras.dmd.yaml
+- add_frame:
+    name: _manipuland_table_top_center_from_left_panda
+    X_PF:
+      base_frame: left::panda::origin
+      # Copied from data/stations/salem/add_manipuland_table_top_center_from_left_panda.dmd.yaml
+      # as of 2024-11-04 with git SHA d3ab8c1.
+      translation: [0.7194, -0.1952, 0.1170]
+      rotation: !Rpy { deg: [0.8675, -0.4764, -48.0155] }
+- add_weld:
+    parent: manipuland_table::table_top_center
+    child: _manipuland_table_top_center_from_left_panda
+
+# Add the scene cameras, taken from calibration.
+# Scene camera 6CD146030E99.
+# Copied from data/stations/salem/calibration/add_cameras_table.dmd.yaml
+# as of 2024-11-04 with git SHA d3ab8c1.
+- add_frame:
+    name: camera_6CD146030E99
+    X_PF:
+      base_frame: manipuland_table::table_top_center
+      translation: [0.4925198648813639, 0.26256949292330367, 0.9073075406104864]
+      rotation: !Rpy { deg: [-155.5479018204288, 8.28875826658366, 95.27030651798165] }
+- add_model:
+    name: camera_6CD146030E99_model
+    file: package://lbm_eval_models/stations/cameras/framos_d415e_keepout.sdf
+- add_weld:
+    parent: camera_6CD146030E99
+    child: camera_6CD146030E99_model::rgb
+# Scene camera 6CD146031C25
+# Copied from data/stations/salem/calibration/add_cameras_table.dmd.yaml
+# as of 2024-11-04 with git SHA d3ab8c1.
+- add_frame:
+    name: camera_6CD146031C25
+    X_PF:
+      base_frame: manipuland_table::table_top_center
+      translation: [0.5409568873005437, -0.346209811784005, 0.8610722155542587]
+      rotation: !Rpy { deg: [-146.45201735329164, -10.166582707826988, 77.54843031845813] }
+- add_model:
+    name: camera_6CD146031C25_model
+    file: package://lbm_eval_models/stations/cameras/framos_d415e_keepout.sdf
+- add_weld:
+    parent: camera_6CD146031C25
+    child: camera_6CD146031C25_model::rgb
+
+# Add the wrist cameras, measured from CAD.
+# Left Arm : Left side camera.
+- add_frame:
+    name: camera_BFS_23595718
+    X_PF:
+      base_frame: left::panda::flange_rotated
+      translation: [-0.06577, 0, 0.0048]
+      rotation: !Rpy { deg: [0, 0, -90] }
+# Left Arm : Right side camera.
+- add_frame:
+    name: camera_BFS_23595721
+    X_PF:
+      base_frame: left::panda::flange_rotated
+      translation: [0.06577, 0, 0.0048]
+      rotation: !Rpy { deg: [0, 0, 90] }
+
+# Right Arm : Left side camera.
+- add_frame:
+    name: camera_BFS_23595722
+    X_PF:
+      base_frame: right::panda::flange_rotated
+      translation: [-0.06577, 0, 0.0048]
+      rotation: !Rpy { deg: [0, 0, -90] }
+# Right Arm : Right side camera.
+- add_frame:
+    name: camera_BFS_23595725
+    X_PF:
+      base_frame: right::panda::flange_rotated
+      translation: [0.06577, 0, 0.0048]
+      rotation: !Rpy { deg: [0, 0, 90] }
