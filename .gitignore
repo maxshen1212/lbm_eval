@@ -4,9 +4,10 @@ __pycache__/
 *$py.class
 **/__pycache__/
 
-scratch.py 
+scratch.py
 run_eval.sh
-output/ 
+outputs/
 
 *.dist-info/
 *.whl
+scripts/

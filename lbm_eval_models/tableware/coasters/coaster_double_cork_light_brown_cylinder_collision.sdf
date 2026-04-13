@@ -23,7 +23,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/coasters/assets/coaster_double_cork_light_brown.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/coasters/assets/coaster_double_cork_light_brown.gltf</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

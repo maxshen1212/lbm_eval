@@ -25,7 +25,7 @@
         <pose>0 0 0 -1.5708 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/groceries/bell_peppers/assets/red_bell_pepper_no_stem_high.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/groceries/bell_peppers/assets/red_bell_pepper_no_stem_high.gltf</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>
@@ -38,7 +38,7 @@
             this means that the collision object will be the convex hull of
             the mesh rather the mesh directly due to declaring these to be
             compliant hydroelastic objects. -->
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/groceries/bell_peppers/assets/red_bell_pepper_no_stem_low.obj</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/groceries/bell_peppers/assets/red_bell_pepper_no_stem_low.obj</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

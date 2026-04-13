@@ -1,0 +1,530 @@
+cameras:
+- X_PB:
+    base_frame: camera_6CD146030E96
+    rotation: !Rpy
+      deg: [75.0, -8.0, 187]
+    translation: [0.1, -0.8, 0.7]
+  center_x: 321.269
+  center_y: 247.86
+  depth: true
+  focal: !FocalLength {x: 381.0}
+  fps: 20
+  height: 480.0
+  label: true
+  lcm_bus: camera
+  name: 6CD146030E96
+  renderer_class: !RenderEngineVtkParams
+    cast_shadows: true
+    environment_map:
+      skybox: true
+      texture: !EquirectangularMap {path: 'package://lbm_eval_models/environment_maps/poly_haven_studio_4k.hdr'}
+    exposure: 0.4
+    lights:
+    - attenuation_values: [1, 0, 0]
+      color:
+        rgba: [0.8845121614157588, 0.942408125536913, 1.0, 1.0]
+      cone_angle: 20
+      direction: [0.13748593460699587, 0.36661829661098666, -1.0]
+      frame: world
+      intensity: 2.331785214952805
+      type: directional
+    shadow_map_size: 1024
+  renderer_name: renderer_1
+  rgb: true
+  width: 640.0
+- X_PB:
+    base_frame: camera_6CD146030E9E
+    rotation: !AngleAxis
+      angle_deg: 0.0
+      axis: [0.4420636171229182, -0.07559675325787879, 0.3478892418222018]
+    translation: [0.0, 0.0, 0.0]
+  center_x: 321.269
+  center_y: 247.86
+  depth: true
+  focal: !FocalLength {x: 381.0}
+  fps: 20
+  height: 480.0
+  label: true
+  lcm_bus: camera
+  name: 6CD146030E9E
+  renderer_class: RenderEngineVtk
+  renderer_name: renderer_1
+  rgb: true
+  width: 640.0
+- X_PB:
+    base_frame: camera_6CD146030AFC
+    rotation: !Rpy
+      deg: [0.0, 0.0, 0.0]
+    translation: [0.0, 0.0, 0.0]
+  center_x: 321.269
+  center_y: 247.86
+  depth: true
+  focal: !FocalLength {x: 268.0}
+  fps: 20
+  height: 480.0
+  label: true
+  lcm_bus: camera
+  name: 6CD146030AFC
+  renderer_class: RenderEngineVtk
+  renderer_name: renderer_1
+  rgb: true
+  width: 640.0
+- X_PB:
+    base_frame: camera_6CD146030B09
+    rotation: !Rpy
+      deg: [0.0, 0.0, 0.0]
+    translation: [0.0, 0.0, 0.0]
+  center_x: 321.269
+  center_y: 247.86
+  depth: true
+  focal: !FocalLength {x: 268.0}
+  fps: 20
+  height: 480.0
+  label: true
+  lcm_bus: camera
+  name: 6CD146030B09
+  renderer_class: RenderEngineVtk
+  renderer_name: renderer_1
+  rgb: true
+  width: 640.0
+directives:
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/franka_station/riverway_station.sdf
+    name: riverway_station
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/franka_station/station_natural_brown_table_top_compliant.sdf
+    name: manipuland_table
+- add_frame:
+    X_PF:
+      base_frame: manipuland_table::origin
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.0]
+    name: manipuland_table::table_top_center
+- add_weld: {child: 'manipuland_table::table_top_center', parent: world}
+- add_frame:
+    X_PF:
+      base_frame: riverway_station::station_table_cart
+      rotation: !Rpy
+        deg: [0.0, 0.0, 135.0]
+      translation: [0.0, 0.0, 0.147]
+    name: riverway_station::table_cart_weld_to_frame
+- add_weld: {child: table_cart_weld_to_frame, parent: 'manipuland_table::table_top_center'}
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/franka_station/station_arm_cart_gantry.sdf
+    name: riverway_station_arm_cart_gantry_right
+- add_frame:
+    X_PF:
+      base_frame: riverway_station::station_arm_cart_right
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, -0.012, 0.0]
+    name: riverway_station::right_arm_cart_gantry_weld_frame
+- add_weld: {child: 'riverway_station_arm_cart_gantry_right::station_arm_cart_gantry',
+    parent: right_arm_cart_gantry_weld_frame}
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/franka_station/station_gantry_base_plate.sdf
+    name: riverway_station_gantry_base_plate_right
+- add_frame:
+    X_PF:
+      base_frame: riverway_station_arm_cart_gantry_right::station_arm_cart_gantry
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.185, 0.0, 0.041]
+    name: riverway_station_arm_cart_gantry_right::gantry_base_plate_weld_frame_right
+- add_weld: {child: 'riverway_station_gantry_base_plate_right::station_gantry_base_plate',
+    parent: gantry_base_plate_weld_frame_right}
+- add_model_instance: {name: right}
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://drake_models/franka_description/urdf/panda_arm_link5split.urdf
+    name: right::panda
+- add_frame:
+    X_PF:
+      base_frame: right::panda::panda_link0
+      rotation: {}
+      translation: [0.0, 0.0, 0.0]
+    name: right::panda::origin
+- add_frame:
+    X_PF:
+      base_frame: right::panda::panda_link8
+      rotation: !Rpy
+        deg: [0.0, 0.0, -45.0]
+      translation: [0.0, 0.0, 0.0]
+    name: right::panda::flange_rotated
+- add_frame:
+    X_PF:
+      base_frame: right::panda::flange_rotated
+      rotation: !Rpy
+        deg: [180.0, 0.0, 90.0]
+      translation: [0.0, 0.0, 0.0]
+    name: right::panda::wrist_semantic_frame
+- add_collision_filter_group:
+    ignored_collision_filter_groups: []
+    member_groups: []
+    members: ['panda::panda_link5_upper', 'panda::panda_link6', 'panda::panda_link7',
+      'panda::panda_link8']
+    model_namespace: right
+    name: panda_wrist_filter_group
+- add_frame:
+    X_PF:
+      base_frame: right::panda::origin
+      rotation: !Rpy
+        deg: [-0.8804, -1.7438, 42.9643]
+      translation: [0.6586, 0.1647, 0.1038]
+    name: right::panda::_manipuland_table_top_center_from_right_panda
+- add_weld: {child: _manipuland_table_top_center_from_right_panda, parent: 'manipuland_table::table_top_center'}
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/franka_station/station_arm_cart_gantry.sdf
+    name: riverway_station_arm_cart_gantry_left
+- add_frame:
+    X_PF:
+      base_frame: riverway_station::station_arm_cart_left
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, -0.019, 0.0]
+    name: riverway_station::left_arm_cart_gantry_weld_frame
+- add_weld: {child: 'riverway_station_arm_cart_gantry_left::station_arm_cart_gantry',
+    parent: left_arm_cart_gantry_weld_frame}
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/franka_station/station_gantry_base_plate.sdf
+    name: riverway_station_gantry_base_plate_left
+- add_frame:
+    X_PF:
+      base_frame: riverway_station_arm_cart_gantry_left::station_arm_cart_gantry
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [-0.1675, 0.0, 0.041]
+    name: riverway_station_arm_cart_gantry_left::gantry_base_plate_weld_frame_left
+- add_weld: {child: 'riverway_station_gantry_base_plate_left::station_gantry_base_plate',
+    parent: gantry_base_plate_weld_frame_left}
+- add_model_instance: {name: left}
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://drake_models/franka_description/urdf/panda_arm_link5split.urdf
+    name: left::panda
+- add_frame:
+    X_PF:
+      base_frame: left::panda::panda_link0
+      rotation: {}
+      translation: [0.0, 0.0, 0.0]
+    name: left::panda::origin
+- add_frame:
+    X_PF:
+      base_frame: left::panda::panda_link8
+      rotation: !Rpy
+        deg: [0.0, 0.0, -45.0]
+      translation: [0.0, 0.0, 0.0]
+    name: left::panda::flange_rotated
+- add_frame:
+    X_PF:
+      base_frame: left::panda::flange_rotated
+      rotation: !Rpy
+        deg: [180.0, 0.0, 90.0]
+      translation: [0.0, 0.0, 0.0]
+    name: left::panda::wrist_semantic_frame
+- add_collision_filter_group:
+    ignored_collision_filter_groups: []
+    member_groups: []
+    members: ['panda::panda_link5_upper', 'panda::panda_link6', 'panda::panda_link7',
+      'panda::panda_link8']
+    model_namespace: left
+    name: panda_wrist_filter_group
+- add_frame:
+    X_PF:
+      base_frame: left::panda::origin
+      rotation: !Rpy
+        deg: [-0.35, -1.1269, -46.796]
+      translation: [0.6561, -0.1959, 0.0944]
+    name: left::panda::_manipuland_table_top_center_from_left_panda
+- add_weld: {child: _manipuland_table_top_center_from_left_panda, parent: 'manipuland_table::table_top_center'}
+- add_frame:
+    X_PF:
+      base_frame: manipuland_table::table_top_center
+      rotation: !Rpy
+        deg: [-144.02622026208346, 7.175918743777246, 99.05897849355833]
+      translation: [0.5475459165740518, 0.18739323059527133, 0.8359720915694936]
+    name: manipuland_table::camera_6CD146030E96
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/cameras/framos_d415e_keepout.sdf
+    name: camera_6CD146030E96_model
+- add_weld: {child: 'camera_6CD146030E96_model::rgb', parent: camera_6CD146030E96}
+- add_frame:
+    X_PF:
+      base_frame: manipuland_table::table_top_center
+      rotation: !Rpy
+        deg: [-143.5224306152587, -17.515017743503677, 73.93604661555008]
+      translation: [0.4971372129776017, -0.36177129391458523, 0.7787723308545904]
+    name: manipuland_table::camera_6CD146030E9E
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/stations/cameras/framos_d415e_keepout.sdf
+    name: camera_6CD146030E9E_model
+- add_weld: {child: 'camera_6CD146030E9E_model::rgb', parent: camera_6CD146030E9E}
+- add_frame:
+    X_PF:
+      base_frame: right::panda::panda_link8
+      rotation: !Rpy
+        deg: [-20.0, 0.0, -135.0]
+      translation: [-0.05, 0.05, 0.01]
+    name: right::panda::camera_6CD146030AFC
+- add_frame:
+    X_PF:
+      base_frame: left::panda::panda_link8
+      rotation: !Rpy
+        deg: [-20.0, 0.0, 45.0]
+      translation: [0.05, -0.05, 0.01]
+    name: left::panda::camera_6CD146030B09
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/robots/panda_hands/panda_hand_finray_actuated_mesh_mimic.urdf
+    name: right::panda_hand
+- add_frame:
+    X_PF:
+      base_frame: right::panda::panda_link8
+      rotation: !Rpy
+        deg: [0.0, 0.0, -45.0]
+      translation: [0.0, 0.0, 0.0]
+    name: right::panda_hand::_origin
+- add_weld: {child: 'right::panda_hand::panda_hand', parent: 'right::panda_hand::_origin'}
+- add_frame:
+    X_PF:
+      base_frame: right::panda_hand::panda_finger_tip_center
+      rotation: !Rpy
+        deg: [180.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.0]
+    name: right::panda_hand::grasp_frame
+- add_frame:
+    X_PF:
+      base_frame: right::panda_hand::panda_hand
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.0704]
+    name: right::panda_hand::finger_screw
+- add_frame:
+    X_PF:
+      base_frame: right::panda_hand::finger_screw
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.024]
+    name: right::panda_hand::calib_tip
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/robots/panda_hands/panda_hand_finray_actuated_mesh_mimic.urdf
+    name: left::panda_hand
+- add_frame:
+    X_PF:
+      base_frame: left::panda::panda_link8
+      rotation: !Rpy
+        deg: [0.0, 0.0, -45.0]
+      translation: [0.0, 0.0, 0.0]
+    name: left::panda_hand::_origin
+- add_weld: {child: 'left::panda_hand::panda_hand', parent: 'left::panda_hand::_origin'}
+- add_frame:
+    X_PF:
+      base_frame: left::panda_hand::panda_finger_tip_center
+      rotation: !Rpy
+        deg: [180.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.0]
+    name: left::panda_hand::grasp_frame
+- add_frame:
+    X_PF:
+      base_frame: left::panda_hand::panda_hand
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.0704]
+    name: left::panda_hand::finger_screw
+- add_frame:
+    X_PF:
+      base_frame: left::panda_hand::finger_screw
+      rotation: !Rpy
+        deg: [0.0, 0.0, 0.0]
+      translation: [0.0, 0.0, 0.024]
+    name: left::panda_hand::calib_tip
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/kitchen_accessories/shelves/vivo_custom_single_shelf.sdf
+    name: shelving
+- add_weld:
+    X_PC:
+      rotation: !Rpy
+        deg: [0.0, 0.0, 180.0]
+      translation: [0.0, -0.05, 0.0]
+    child: shelving::origin
+    parent: manipuland_table::origin
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/groceries/cereals/punyos_cereal_box.sdf
+    name: cereal_box_0
+- add_weld:
+    X_PC:
+      rotation: !Rpy
+        deg: [0.0, 0.0, 160.85950731574312]
+      translation: [0.012291575649318376, -0.1, 0.0]
+    child: cereal_box_0::box_bottom_center__z_up
+    parent: shelving::plywood_top_center__z_up
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/kitchen_accessories/bins/container_amuse_white_issue7265_body_low.sdf
+    name: bell_pepper_bin
+- add_weld:
+    X_PC:
+      rotation: !Rpy
+        deg: [0.0, 0.0, -0.3794274641715205]
+      translation: [-0.21595463846108948, 0.5767931135412595, 0.0]
+    child: bell_pepper_bin::bottom
+    parent: manipuland_table::origin
+- add_frame:
+    X_PF:
+      base_frame: manipuland_table::origin
+      rotation: {}
+      translation: [-0.1, -0.4, 0.06]
+    name: manipuland_table::bell_pepper_start
+- add_frame:
+    X_PF:
+      base_frame: bell_pepper_bin::center
+      rotation: {}
+      translation: [0.0, 0.0, 0.0]
+    name: bell_pepper_bin::bell_pepper_target
+- add_model:
+    default_free_body_pose:
+      center__z_up:
+        base_frame: bell_pepper_start
+        rotation: !Rpy
+          deg: [-81.34192183404951, -102.63999551204768, 35.727397927350125]
+        translation: [-0.027233157983240483, 0.08231966111813535, 0.0]
+    default_joint_positions: {}
+    file: package://lbm_eval_models/groceries/bell_peppers/red_bell_pepper_no_stem_scale_95.sdf
+    name: bell_pepper_0
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/kitchen_accessories/cutting_boards/oxo_plastic_cutting_board.sdf
+    name: cutting_board_0
+- add_weld:
+    X_PC:
+      rotation: !Rpy
+        deg: [0.0, 0.0, -17.72907485180329]
+      translation: [0.16, 0.42126757903182205, 0.0]
+    child: cutting_board_0::oxo_plastic_cutting_board
+    parent: manipuland_table::origin
+- add_model:
+    default_free_body_pose: {}
+    default_joint_positions: {}
+    file: package://lbm_eval_models/tableware/bowls/generic_fruit_bowl.sdf
+    name: fruit_bowl
+- add_weld:
+    X_PC:
+      rotation: {}
+      translation: [0.0997938671176688, -0.30898822757551336, 0.0]
+    child: fruit_bowl::origin
+    parent: manipuland_table::origin
+- add_model:
+    default_free_body_pose:
+      mass_center__z_up:
+        base_frame: fruit_bowl::origin
+        rotation: !Rpy
+          deg: [56.67173532990685, 108.61593833613841, 67.16244654974304]
+        translation: [0.018861133098284376, -0.027387427254292364, 0.08]
+    default_joint_positions: {}
+    file: package://lbm_eval_models/groceries/pears/starkrimson_pear.sdf
+    name: fruit_0
+- add_model:
+    default_free_body_pose:
+      mass_center__z_up:
+        base_frame: fruit_bowl::origin
+        rotation: !Rpy
+          deg: [58.529217418459865, 68.74637012677272, -17.422764095331843]
+        translation: [-0.0005983224295192588, 0.029591463863089446, 0.18]
+    default_joint_positions: {}
+    file: package://lbm_eval_models/groceries/apples/gala_apple.sdf
+    name: fruit_1
+initial_position:
+  left::panda:
+    panda_joint1: [-0.6108652381980153]
+    panda_joint2: [-0.6108652381980153]
+    panda_joint3: [0]
+    panda_joint4: [-2.356194490192345]
+    panda_joint5: [0]
+    panda_joint6: [1.8325957145940461]
+    panda_joint7: [0.7853981633974483]
+  left::panda_hand:
+    panda_finger_joint1: [-0.04]
+    panda_finger_joint2: [0.04]
+  right::panda:
+    panda_joint1: [0.4363323129985824]
+    panda_joint2: [-0.6108652381980153]
+    panda_joint3: [0.0]
+    panda_joint4: [-2.356194490192345]
+    panda_joint5: [0]
+    panda_joint6: [1.8325957145940461]
+    panda_joint7: [-1.1344640137963142]
+  right::panda_hand:
+    panda_finger_joint1: [-0.04]
+    panda_finger_joint2: [0.04]
+item_locking:
+  unlock_near_geometry: ['right::panda::panda_link3', 'right::panda::panda_link4',
+    'right::panda_hand::panda_leftfinger', 'right::panda_hand::panda_rightfinger',
+    'left::panda::panda_link3', 'left::panda::panda_link4', 'left::panda_hand::panda_leftfinger',
+    'left::panda_hand::panda_rightfinger']
+lcm_buses:
+  camera: {lcm_url: 'memq://null'}
+  default: {lcm_url: 'memq://null'}
+  left: {lcm_url: 'memq://null'}
+  right: {lcm_url: 'memq://null'}
+  visualizer_bus: {lcm_url: 'memq://null'}
+logging:
+  logs:
+  - !KeyframesLogging {filename: /data/maxshen/lbm_eval/outputs2/bimanual_place_apple_from_bowl_on_cutting_board/demonstration_13/keyframes.txt,
+    frequency_fps: 10.0}
+  - !DeformableLogging {filename: /data/maxshen/lbm_eval/outputs2/bimanual_place_apple_from_bowl_on_cutting_board/demonstration_13/deformable.h5,
+    frequency_fps: 10.0}
+  - !HtmlRecording {filename: /data/maxshen/lbm_eval/outputs2/bimanual_place_apple_from_bowl_on_cutting_board/demonstration_13/recording.html,
+    frequency_fps: 20.0}
+model_drivers:
+  left::panda: !IiwaDriver {arm_child_frame_name: panda_link0, control_mode: position_only,
+    ext_joint_filter_tau: 0.01, gripper_parent_frame_name: panda_link8, hand_model_name: 'left::panda_hand',
+    lcm_bus: left, lcm_status_period: 0.001}
+  left::panda_hand: !SchunkWsgImplicitPdDriver {}
+  right::panda: !IiwaDriver {arm_child_frame_name: panda_link0, control_mode: position_only,
+    ext_joint_filter_tau: 0.01, gripper_parent_frame_name: panda_link8, hand_model_name: 'right::panda_hand',
+    lcm_bus: right, lcm_status_period: 0.001}
+  right::panda_hand: !SchunkWsgImplicitPdDriver {}
+plant_config: {contact_model: hydroelastic_with_fallback, discrete_contact_approximation: lagged,
+  penetration_allowance: 2e-3, stiction_tolerance: 1e-4, time_step: 10e-3}
+preconditions:
+  constraints:
+    FruitDoesntIntersectBowl: !NonCollisionConstraint
+      forbid_collision_between: ['fruit_bowl::.*', 'fruit_0::.*', 'fruit_1::.*']
+    RedBellPepperDoesntIntersectBowl: !NonCollisionConstraint
+      forbid_collision_between: ['bell_pepper_0::.*', 'fruit_bowl::.*']
+random_seed: 100000113
+scene_graph_config:
+  default_proximity_properties: {margin: 1e-4}
+simulation_duration: .inf
+simulator_config: {accuracy: 0.01, integration_scheme: runge_kutta2, max_step_size: 0.001,
+  publish_every_time_step: false, target_realtime_rate: 0.0, use_error_control: false}
+visualization: {enable_meshcat_creation: true, lcm_bus: visualizer_bus, publish_contacts: false,
+  publish_illustration: true, publish_period: 0.05, publish_proximity: true}

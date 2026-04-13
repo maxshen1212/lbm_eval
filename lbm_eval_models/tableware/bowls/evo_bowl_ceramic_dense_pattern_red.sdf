@@ -23,7 +23,7 @@
         <geometry>
           <mesh>
             <scale>1.0 1.0 1.0</scale>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/bowls/assets/evo_bowl_ceramic_dense_pattern_red.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/bowls/assets/evo_bowl_ceramic_dense_pattern_red.gltf</uri>
           </mesh>
         </geometry>
       </visual>
@@ -31,7 +31,7 @@
         <pose>0.0 0.0 0.0 0.0 -0.0 0.0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/bowls/assets/evo_bowl_fine44k.vtk</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/bowls/assets/evo_bowl_fine44k.vtk</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

@@ -49,6 +49,14 @@ from anzu.intuitive.visuomotor.multiarm_simulations import (
     HardwareStationScenarioSimulationEnvConfig,
 )
 
+"""
+
+python3 -m lbm_eval.evaluate \
+--skill_type=put_kiwi_in_center_of_table \
+--num_evaluations=1 \
+--num_processes=1 \
+--output_dir=output
+"""
 
 @dataclasses.dataclass
 class SingleEvaluationResult:
@@ -229,28 +237,28 @@ def evaluate_one(
     """
     # Wrap the evaluation logic in a try-except so that we can reify exceptions
     # into a SingleEvaluationResult with the details.
-    try:
-        return _evaluate_one_impl(
-            skill_type=skill_type,
-            scenario_index=scenario_index,
-            output_directory=output_directory,
-            use_eval_seed=use_eval_seed,
-            t_max=t_max,
-            server_uri=server_uri,
-            use_rpc=use_rpc,
-            policy=policy,
-        )
-    except Exception:
-        string_file = io.StringIO()
-        traceback.print_exc(file=string_file)
-        return SingleEvaluationResult(
-            skill_type=skill_type,
-            scenario_index=scenario_index,
-            is_pending=False,
-            total_time=None,
-            is_success=False,
-            failure_message=string_file.getvalue(),
-        )
+    # try:
+    return _evaluate_one_impl(
+        skill_type=skill_type,
+        scenario_index=scenario_index,
+        output_directory=output_directory,
+        use_eval_seed=use_eval_seed,
+        t_max=t_max,
+        server_uri=server_uri,
+        use_rpc=use_rpc,
+        policy=policy,
+    )
+    # except Exception:
+    #     string_file = io.StringIO()
+    #     traceback.print_exc(file=string_file)
+    #     return SingleEvaluationResult(
+    #         skill_type=skill_type,
+    #         scenario_index=scenario_index,
+    #         is_pending=False,
+    #         total_time=None,
+    #         is_success=False,
+    #         failure_message=string_file.getvalue(),
+    #     )
 
 
 def _evaluate_one_impl(
@@ -269,7 +277,7 @@ def _evaluate_one_impl(
     # skills must have a file named "skill_filenames.txt" at their root,
     # containing a newline-separated list of skill filename relative paths.
     package_map = MakeDefaultAnzuPackageMap()
-    print(f"package_map.GetPackageNames(): {package_map.GetPackageNames()}")
+    print(f"[_evaluate_one_impl] package_map.GetPackageNames(): {package_map.GetPackageNames()}")
     config_file = None
     for package_name in package_map.GetPackageNames():
         base = Path(package_map.GetPath(package_name))

@@ -33,7 +33,7 @@
           <mesh>
             <!-- Note that this is a "high" quality mesh but it is not named
                  as such for legacy reasons. -->
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/plates/assets/ikea_dinera_plate_8in_black.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/plates/assets/ikea_dinera_plate_8in_black.gltf</uri>
           </mesh>
         </geometry>
       </visual>
@@ -41,7 +41,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/plates/assets/ikea_dinera_plate_8in_low_8faces.vtk</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/plates/assets/ikea_dinera_plate_8in_low_8faces.vtk</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

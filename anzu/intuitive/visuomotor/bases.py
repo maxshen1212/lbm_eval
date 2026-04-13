@@ -535,6 +535,8 @@ def collect_episode_gym(
     scene_right_rgb = time_step.obs.visuo["scene_right_0"].rgb.array
     frames.append(scene_right_rgb)
     ###---###
+
+    # print(f"is_terminal_time_step(time_step): {is_terminal_time_step(time_step)}")
     
     try:
         while not is_terminal_time_step(time_step):

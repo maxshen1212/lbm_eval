@@ -25,7 +25,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/spatulas/assets/thimma_wood_blue_flat_spatula.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/spatulas/assets/thimma_wood_blue_flat_spatula.gltf</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>
@@ -34,7 +34,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/spatulas/assets/thimma_wood_flat_spatula_low.vtk</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/spatulas/assets/thimma_wood_flat_spatula_low.vtk</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

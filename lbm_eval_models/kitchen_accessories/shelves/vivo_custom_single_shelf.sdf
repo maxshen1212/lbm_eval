@@ -19,7 +19,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/kitchen_accessories/shelves/assets/vivo_custom_single_shelf.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/kitchen_accessories/shelves/assets/vivo_custom_single_shelf.gltf</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

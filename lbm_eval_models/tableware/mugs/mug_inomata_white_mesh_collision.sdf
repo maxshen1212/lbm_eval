@@ -24,7 +24,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/mugs/assets/mug_inomata_white_mesh_collision.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/mugs/assets/mug_inomata_white_mesh_collision.gltf</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -33,7 +33,7 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/tableware/mugs/assets/mug_inomata_white_low_16faces.vtk</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/tableware/mugs/assets/mug_inomata_white_low_16faces.vtk</uri>
             <scale>1.0 1.0 1.0</scale>
           </mesh>
         </geometry>

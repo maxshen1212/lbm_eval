@@ -30,7 +30,7 @@
         <pose>0 0 0 -1.5708 0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/ubuntu/lbm_eval/lbm_eval_models/kitchen_accessories/bins/assets/container_amuse_body_black.gltf</uri>
+            <uri>/data/kylehatch/lbm_eval/lbm_eval_models/kitchen_accessories/bins/assets/container_amuse_body_black.gltf</uri>
             <!-- Note: This model is explicitly scaled down. -->
             <scale>0.75 0.75 0.75</scale>
           </mesh>
