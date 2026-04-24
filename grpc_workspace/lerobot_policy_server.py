@@ -53,21 +53,29 @@ from lerobot.policies.diffusion.modeling_diffusion import DiffusionPolicy
 from lerobot.policies.factory import make_pre_post_processors
 
 from robot_gym.multiarm_spaces import MultiarmObservation, PosesAndGrippers
-from robot_gym.multiarm_spaces_conversions import matrix_to_rotation_6d, rotation_6d_to_matrix
+from robot_gym.multiarm_spaces_conversions import (
+    matrix_to_rotation_6d,
+    rotation_6d_to_matrix,
+)
 from robot_gym.policy import Policy, PolicyMetadata
 
-from grpc_workspace.lbm_policy_server import LbmPolicyServerConfig, run_policy_server
+from grpc_workspace.lbm_policy_server import (
+    LbmPolicyServerConfig,
+    run_policy_server,
+)
 
 _LOG = logging.getLogger(__name__)
 
 # Semantic camera key for ``observation.images.*``; must match the LeRobot dataset feature name.
-_SCENE_RIGHT_CAMERA = "scene_right_0"
+_CAMERAS = ["scene_right_0"]
 
 # TRI 6D encoding of R = I₃; shape (6,), dtype float64; copied when an arm pose is missing.
 _IDENTITY_ROT6D_TRI = matrix_to_rotation_6d(np.eye(3))
 
 
-def _proprio_20d_numpy_from_observation(lbm_obs: MultiarmObservation) -> np.ndarray:
+def _proprio_20d_numpy_from_observation(
+    lbm_obs: MultiarmObservation,
+) -> np.ndarray:
     """Construct the 20-dimensional proprioceptive state vector (NumPy, no batch dimension).
 
     End-effector positions and TRI 6D rotations are read **in the task frame** from
@@ -109,7 +117,14 @@ def _proprio_20d_numpy_from_observation(lbm_obs: MultiarmObservation) -> np.ndar
     left_gripper = np.array([actual.grippers.get("left::panda_hand", 0.0)])
 
     return np.concatenate(
-        [right_xyz, right_rot6d, right_gripper, left_xyz, left_rot6d, left_gripper]
+        [
+            right_xyz,
+            right_rot6d,
+            right_gripper,
+            left_xyz,
+            left_rot6d,
+            left_gripper,
+        ]
     ).astype(np.float32)
 
 
@@ -184,21 +199,23 @@ class LerobotDiffusionWrapper(Policy):
         self, observations: Dict[uuid.UUID, MultiarmObservation]
     ) -> Dict[uuid.UUID, PosesAndGrippers]:
         out: Dict[uuid.UUID, PosesAndGrippers] = {}
-        img_key = f"observation.images.{_SCENE_RIGHT_CAMERA}"
+
         for uid, lbm_obs in observations.items():
             raw_observation = self._build_observation_tensors(lbm_obs)
+            for cam in _CAMERAS:
+                img_key = f"observation.images.{cam}"
+                img_raw = raw_observation[img_key]
+                _LOG.debug(
+                    "Raw observation %s: shape=%s dtype=%s min=%.6f max=%.6f mean=%.6f",
+                    img_key,
+                    tuple(img_raw.shape),
+                    img_raw.dtype,
+                    img_raw.min().item(),
+                    img_raw.max().item(),
+                    img_raw.mean().item(),
+                )
 
-            img_raw = raw_observation[img_key]
             st_raw = raw_observation["observation.state"]
-            _LOG.debug(
-                "Raw observation %s: shape=%s dtype=%s min=%.6f max=%.6f mean=%.6f",
-                img_key,
-                tuple(img_raw.shape),
-                img_raw.dtype,
-                img_raw.min().item(),
-                img_raw.max().item(),
-                img_raw.mean().item(),
-            )
             _LOG.debug(
                 "Raw observation.state: shape=%s dtype=%s min=%.6f max=%.6f mean=%.6f",
                 tuple(st_raw.shape),
@@ -209,20 +226,22 @@ class LerobotDiffusionWrapper(Policy):
             )
 
             normalized_observation = self.pre_processor(raw_observation)
+            for cam in _CAMERAS:
+                img_key = f"observation.images.{cam}"
+                img_n = normalized_observation.get(img_key)
+                if isinstance(img_n, torch.Tensor):
+                    _LOG.debug(
+                        "Normalized %s: shape=%s min=%.6f max=%.6f mean=%.6f",
+                        img_key,
+                        tuple(img_n.shape),
+                        img_n.min().item(),
+                        img_n.max().item(),
+                        img_n.mean().item(),
+                    )
+                else:
+                    _LOG.debug("Normalized %s: %r", img_key, img_n)
 
-            img_n = normalized_observation.get(img_key)
             st_n = normalized_observation.get("observation.state")
-            if isinstance(img_n, torch.Tensor):
-                _LOG.debug(
-                    "Normalized %s: shape=%s min=%.6f max=%.6f mean=%.6f",
-                    img_key,
-                    tuple(img_n.shape),
-                    img_n.min().item(),
-                    img_n.max().item(),
-                    img_n.mean().item(),
-                )
-            else:
-                _LOG.debug("Normalized %s: %r", img_key, img_n)
             if isinstance(st_n, torch.Tensor):
                 _LOG.debug(
                     "Normalized observation.state: shape=%s min=%.6f max=%.6f mean=%.6f",
@@ -233,12 +252,15 @@ class LerobotDiffusionWrapper(Policy):
                 )
             else:
                 _LOG.debug("Normalized observation.state: %r", st_n)
+
             for key, tensor in normalized_observation.items():
                 if isinstance(tensor, torch.Tensor):
                     normalized_observation[key] = tensor.to(self.device)
 
             with torch.no_grad():
-                normalized_action = self.policy.select_action(normalized_observation)
+                normalized_action = self.policy.select_action(
+                    normalized_observation
+                )
 
             _LOG.debug(
                 "Predicted normalized action: shape=%s dtype=%s min=%.6f max=%.6f mean=%.6f",
@@ -259,10 +281,14 @@ class LerobotDiffusionWrapper(Policy):
                 unnormalized_action.float().mean().item(),
             )
 
-            out[uid] = self._action_tensor_to_poses_and_grippers(unnormalized_action, lbm_obs)
+            out[uid] = self._action_tensor_to_poses_and_grippers(
+                unnormalized_action, lbm_obs
+            )
         return out
 
-    def _build_observation_tensors(self, lbm_obs: MultiarmObservation) -> Dict[str, torch.Tensor]:
+    def _build_observation_tensors(
+        self, lbm_obs: MultiarmObservation
+    ) -> Dict[str, torch.Tensor]:
         """Assemble the LeRobot observation dict for a single environment.
 
         Returns:
@@ -275,20 +301,25 @@ class LerobotDiffusionWrapper(Policy):
             * ``observation.state``: ``torch.float32``, shape ``(1, 20)``; task-frame proprio from
               ``_proprio_20d_numpy_from_observation(lbm_obs)``.
         """
-        if _SCENE_RIGHT_CAMERA not in lbm_obs.visuo:
-            raise ValueError(f"Camera '{_SCENE_RIGHT_CAMERA}' not found.")
-        # Copy: gRPC-backed buffers can be read-only; PyTorch warns on non-writable numpy.
-        img = np.array(lbm_obs.visuo[_SCENE_RIGHT_CAMERA].rgb.array[..., :3], copy=True)
-        img_t = torch.from_numpy(img).permute(2, 0, 1).float() / 255.0
-        img_t = img_t.unsqueeze(0)
+        obs = {}
+        for cam in _CAMERAS:
+            if cam not in lbm_obs.visuo:
+                raise ValueError(
+                    f"Camera '{cam}' not found. Available: {list(lbm_obs.visuo.keys())}"
+                )
+            img = np.array(lbm_obs.visuo[cam].rgb.array[..., :3], copy=True)
+            img_t = torch.from_numpy(img).permute(2, 0, 1).float() / 255.0
+            obs[f"observation.images.{cam}"] = img_t.unsqueeze(0).to(
+                self.device
+            )
 
         state = _proprio_20d_numpy_from_observation(lbm_obs)
-        state_t = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
-
-        return {
-            f"observation.images.{_SCENE_RIGHT_CAMERA}": img_t.to(self.device),
-            "observation.state": state_t.to(self.device),
-        }
+        obs["observation.state"] = (
+            torch.tensor(state, dtype=torch.float32)
+            .unsqueeze(0)
+            .to(self.device)
+        )
+        return obs
 
     def _action_tensor_to_poses_and_grippers(
         self, action: torch.Tensor, observation: MultiarmObservation
@@ -324,23 +355,51 @@ class LerobotDiffusionWrapper(Policy):
         grippers = copy.deepcopy(observation.robot.actual.grippers)
         joint_position = copy.deepcopy(observation.robot.actual.joint_position)
 
-        _update_arm_pose_from_task_xyz_rot6d(poses, "right::panda", a[0:3], a[3:9])
-        _update_arm_pose_from_task_xyz_rot6d(poses, "left::panda", a[9:12], a[12:18])
+        _update_arm_pose_from_task_xyz_rot6d(
+            poses, "right::panda", a[0:3], a[3:9]
+        )
+        _update_arm_pose_from_task_xyz_rot6d(
+            poses, "left::panda", a[9:12], a[12:18]
+        )
         grippers["right::panda_hand"] = float(a[18])
         grippers["left::panda_hand"] = float(a[19])
 
-        return PosesAndGrippers(poses=poses, grippers=grippers, joint_position=joint_position)
+        return PosesAndGrippers(
+            poses=poses, grippers=grippers, joint_position=joint_position
+        )
 
 
 def main():
-    parser = argparse.ArgumentParser(description="LeRobot Diffusion gRPC policy server for lbm_eval.")
-    parser.add_argument("--model_id", type=str, required=True, help="LeRobot / HF checkpoint directory")
+    parser = argparse.ArgumentParser(
+        description="LeRobot Diffusion gRPC policy server for lbm_eval."
+    )
+    parser.add_argument(
+        "--model_id",
+        type=str,
+        required=True,
+        help="LeRobot / HF checkpoint directory",
+    )
     parser.add_argument(
         "--log-level",
         type=str,
         default="INFO",
         choices=("DEBUG", "INFO", "WARNING", "ERROR"),
         help="Logging level for this server (default: INFO). Use DEBUG to print per-step observation stats.",
+    )
+    parser.add_argument(
+        "--cameras",
+        type=str,
+        nargs="+",
+        default=["scene_right_0"],
+        choices=(
+            "scene_right_0",
+            "scene_left_0",
+            "wrist_left_minus",
+            "wrist_left_plus",
+            "wrist_right_minus",
+            "wrist_right_plus",
+        ),
+        help="Camera(s) to use for observation (default: scene_right_0). Pass multiple to use several.",
     )
     LbmPolicyServerConfig.add_argparse_arguments(parser)
     args = parser.parse_args()
@@ -350,7 +409,8 @@ def main():
         format="%(levelname)s [%(name)s] %(message)s",
         force=True,
     )
-
+    global _CAMERAS
+    _CAMERAS = args.cameras
     policy = LerobotDiffusionWrapper(model_id=args.model_id)
     run_policy_server(policy, args)
 
