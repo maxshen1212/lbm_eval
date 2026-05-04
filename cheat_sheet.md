@@ -41,39 +41,44 @@ lsof -iTCP:51213 -sTCP:LISTEN -n -P
 ss -ltnp | grep ':51214 '
 lsof -iTCP:51214 -sTCP:LISTEN -n -P
 
-## Apple 150k steps
-python3 -m grpc_workspace.lerobot_policy_server \
---model_id=/data/maxshen/gvl1_checkpoints/apple3cameras/110000/pretrained_model --server-uri=localhost:51211 --cameras scene_right_0 wrist_right_minus wrist_left_plus > outputs/egoAndWrist/apple_policy_server.log 2>&1 &
+## Multi-camera policy server
+python -m grpc_workspace.lerobot_policy_server \
+--model_id=/data/maxshen/lerobot/outputs/train/2026-04-28/01-52-40_diffusion/checkpoints/045000/pretrained_model --server-uri=localhost:51211 --cameras scene_right_0 wrist_right_minus wrist_left_plus > outputs/egoAndWrist/apple_policy_server.log 2>&1 &
 
-python3 -m grpc_workspace.lerobot_policy_server \
---model_id=/data/maxshen/gvl1_checkpoints/apple/150000/pretrained_model --server-uri=localhost:51212 > outputs/apple_policy_server.log 2>&1 &
+# Single-camera policy server
+python -m grpc_workspace.lerobot_policy_server \
+--model_id=/data/maxshen/lerobot_checkpoints/apple_egoAndWrist/015000/pretrained_model --server-uri=localhost:51212 > outputs/apple_policy_server.log 2>&1 &
 
-## Banana 150k steps
-python3 -m grpc_workspace.lerobot_policy_server \
---model_id=/data/maxshen/gvl1_checkpoints/banana/150000/pretrained_model --server-uri=localhost:51213 > outputs/banana_policy_server.log 2>&1 &
+python -m grpc_workspace.lerobot_policy_server \
+--model_id=/data/maxshen/lerobot_checkpoints/banana_only_ego/100000/pretrained_model --server-uri=localhost:51213 > outputs/banana_policy_server.log 2>&1 &
 
-## Kiwi 150k steps
-python3 -m grpc_workspace.lerobot_policy_server \
---model_id=/data/maxshen/gvl1_checkpoints/kiwi/150000/pretrained_model --server-uri=localhost:51214 > outputs/kiwi_policy_server.log 2>&1 &
+python  -m grpc_workspace.lerobot_policy_server \
+--model_id=/data/maxshen/lerobot_checkpoints/kiwi_only_ego/100000/pretrained_model --server-uri=localhost:51214 > outputs/kiwi_policy_server.log 2>&1 &
+
+python -m grpc_workspace.dit_policy_server \
+--model_id=/data/maxshen/lerobot/outputs/train/2026-05-03/01-45-44_multitask-dit/checkpoints/040000/pretrained_model \
+--server-uri=localhost:51211 \
+--task_name=BimanualPlaceAppleFromBowlOnCuttingBoard \
+--cameras scene_right_0 wrist_right_minus wrist_left_plus > outputs/egoAndWrist/apple_policy_server.log 2>&1 &
 
 # run env clinet server
 ## apple
-python3 -m lbm_eval.evaluate \
+python -m lbm_eval.evaluate \
 --skill_type=bimanual_place_apple_from_bowl_on_cutting_board \
 --num_evaluations=20 \
 --num_processes=2 \
 --output_dir=outputs/egoAndWrist \
 --server_uri=localhost:51211
 
-python3 -m lbm_eval.evaluate \
+python -m lbm_eval.evaluate \
 --skill_type=bimanual_place_apple_from_bowl_on_cutting_board \
 --num_evaluations=20 \
 --num_processes=2 \
---output_dir=outputs \
+--output_dir=outputs2 \
 --server_uri=localhost:51212
 
 ## banana
-python3 -m lbm_eval.evaluate \
+python -m lbm_eval.evaluate \
 --skill_type=put_banana_on_saucer \
 --num_evaluations=20 \
 --num_processes=2 \
@@ -81,7 +86,7 @@ python3 -m lbm_eval.evaluate \
 --server_uri=localhost:51213
 
 ## kiwi
-python3 -m lbm_eval.evaluate \
+python -m lbm_eval.evaluate \
 --skill_type=put_kiwi_in_center_of_table \
 --num_evaluations=20 \
 --num_processes=2 \
