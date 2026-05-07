@@ -1,0 +1,592 @@
+_target_: diffusion_policy.workspace.lightning_workspace.TrainDiffusionLightningWorkspace
+aws:
+  region: us-west-2
+batch_size: 24
+checkpoint:
+  every_n_epoch: None
+  every_n_steps: 5000
+  save_last_ckpt: false
+  save_last_snapshot: false
+  save_with_step: false
+  topk:
+    format_str: '{epoch:03d}-{val_action_mse:.6f}'
+    k: 3
+    mode: min
+    monitor_key: val_action_mse
+dataloader:
+  batch_size: 24
+  num_workers: 5
+  persistent_workers: true
+  pin_memory: true
+  shuffle: true
+ema:
+  _target_: diffusion_policy.model.diffusion.ema_model.EMAModel
+  inv_gamma: 1.0
+  max_value: 0.9999
+  min_value: 0.0
+  power: 0.75
+  update_after_step: 0
+exp_name: default
+experiment_tag: generic_experiment
+horizon: 16
+keypoint_visible_rate: 1.0
+logging:
+  entity: tri
+  group: swatigupta-lbm-training-2026-04-13-08-08-45
+  mode: online
+  name: swatigupta-lbm-training-2026-04-13-08-08-45
+  project: dit
+  tags:
+  - dit_clip_lang
+  - stage_0_BimanualPlaceAppleFromBowlOnCuttingBoard_v1.2
+  - dataset_fraction_None
+  - lbm
+  - generic_experiment
+  - relative_traj
+  - clip-lang
+  - DiT
+  - diffusion
+n_action_steps: 8
+n_latency_steps: 0
+n_obs_steps: 2
+name: dit_clip_lang
+obs_as_global_cond: true
+optimizer:
+  _target_: torch.optim.AdamW
+  betas:
+  - 0.95
+  - 0.999
+  eps: 1.0e-08
+  lr: 2.0e-05
+  weight_decay: 1.0e-06
+past_action_visible: false
+policy:
+  _target_: diffusion_policy.policy.diffusion_dit_image_policy.DiffusionDiTImagePolicy
+  attention_embed_dim: 768
+  depth: 10
+  diffusion_timestep_embed_dim: 256
+  horizon: 16
+  input_perturbation: 0
+  mlp_ratio: 4.0
+  n_action_steps: 8
+  n_obs_steps: 2
+  noise_scheduler:
+    _target_: diffusers.schedulers.scheduling_ddim.DDIMScheduler
+    beta_end: 0.02
+    beta_schedule: squaredcos_cap_v2
+    beta_start: 0.0001
+    clip_sample: true
+    num_train_timesteps: 100
+    prediction_type: epsilon
+    set_alpha_to_one: true
+    steps_offset: 0
+  num_heads: 12
+  num_inference_steps: 8
+  obs_as_global_cond: true
+  obs_encoder:
+    _target_: diffusion_policy.model.vision.multi_image_language_obs_encoder.MultiImageLanguageObsEncoder
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.4
+      hue:
+      - -0.05
+      - 0.05
+      saturation: 0.2
+    crop_shape:
+    - 224
+    - 224
+    imagenet_norm: true
+    lang_model:
+      _target_: diffusion_policy.model.language.model_getter.get_clip_text
+      weights: openai/clip-vit-base-patch32
+    mt_mode: lang
+    random_crop: true
+    raw_rgb_input: true
+    resize_shape:
+    - 256
+    - 342
+    rgb_model:
+      _target_: diffusion_policy.model.vision.model_getter.get_clip_vit_base_patch16
+      frozen: false
+    shape_meta:
+      action:
+        shape:
+        - 20
+      obs:
+        robot__actual__grippers__left::panda_hand:
+          shape:
+          - 1
+          type: low_dim
+        robot__actual__grippers__right::panda_hand:
+          shape:
+          - 1
+          type: low_dim
+        robot__actual__poses__left::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__left::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__left__right::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__left__right::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__right::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__right::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__right__left::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__right__left::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        scene_right_0:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+        wrist_left_plus:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+        wrist_right_minus:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+    share_rgb_model: true
+    use_group_norm: false
+  qkv_bias: true
+  shape_meta:
+    action:
+      shape:
+      - 20
+    obs:
+      robot__actual__grippers__left::panda_hand:
+        shape:
+        - 1
+        type: low_dim
+      robot__actual__grippers__right::panda_hand:
+        shape:
+        - 1
+        type: low_dim
+      robot__actual__poses__left::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__left::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      robot__actual__poses__left__right::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__left__right::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      robot__actual__poses__right::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__right::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      robot__actual__poses__right__left::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__right__left::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      scene_right_0:
+        shape:
+        - 3
+        - 256
+        - 342
+        type: rgb
+      wrist_left_plus:
+        shape:
+        - 3
+        - 256
+        - 342
+        type: rgb
+      wrist_right_minus:
+        shape:
+        - 3
+        - 256
+        - 342
+        type: rgb
+  skip_model_side_normalization: true
+  train_diffusion_n_samples: 8
+  use_rms_norm: true
+shape_meta:
+  action:
+    shape:
+    - 20
+  obs:
+    robot__actual__grippers__left::panda_hand:
+      shape:
+      - 1
+      type: low_dim
+    robot__actual__grippers__right::panda_hand:
+      shape:
+      - 1
+      type: low_dim
+    robot__actual__poses__left::panda__rot_6d:
+      shape:
+      - 6
+      type: low_dim
+    robot__actual__poses__left::panda__xyz:
+      shape:
+      - 3
+      type: low_dim
+    robot__actual__poses__left__right::panda__rot_6d:
+      shape:
+      - 6
+      type: low_dim
+    robot__actual__poses__left__right::panda__xyz:
+      shape:
+      - 3
+      type: low_dim
+    robot__actual__poses__right::panda__rot_6d:
+      shape:
+      - 6
+      type: low_dim
+    robot__actual__poses__right::panda__xyz:
+      shape:
+      - 3
+      type: low_dim
+    robot__actual__poses__right__left::panda__rot_6d:
+      shape:
+      - 6
+      type: low_dim
+    robot__actual__poses__right__left::panda__xyz:
+      shape:
+      - 3
+      type: low_dim
+    scene_right_0:
+      shape:
+      - 3
+      - 256
+      - 342
+      type: rgb
+    wrist_left_plus:
+      shape:
+      - 3
+      - 256
+      - 342
+      type: rgb
+    wrist_right_minus:
+      shape:
+      - 3
+      - 256
+      - 342
+      type: rgb
+task:
+  data_version: 1.2
+  dataset:
+    _target_: diffusion_policy.datapipe.builder.build_datapipe_from_dict
+    aws_region: us-west-2
+    batch_size: 40
+    clip_inference_normalizer_output: true
+    horizon: 16
+    indices_dicts:
+      single_skill:
+        clipping: true
+        indices:
+        - s3://robotics-manip-lbm/webdataset/format-v1.2/indices_fov/sim/riverway/BimanualPlaceAppleFromBowlOnCuttingBoard/*/filenames_version.txt
+        stats: s3://robotics-manip-lbm/webdataset/format-v1.2/datasets/lbm-v1.0/lbm/sim-and-real/train/normalizer-stats/relative/normalizer_stats.pkl
+        weight: 1.0
+    inference_normalizer_stats_path: s3://robotics-manip-lbm/webdataset/format-v1.2/datasets/lbm-v1.0/lbm/sim-and-real/train/normalizer-stats/relative/normalizer_stats.pkl
+    is_relative: true
+    language_augmentation: true
+    n_obs_steps: 2
+    shape_meta:
+      action:
+        shape:
+        - 20
+      obs:
+        robot__actual__grippers__left::panda_hand:
+          shape:
+          - 1
+          type: low_dim
+        robot__actual__grippers__right::panda_hand:
+          shape:
+          - 1
+          type: low_dim
+        robot__actual__poses__left::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__left::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__left__right::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__left__right::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__right::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__right::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__right__left::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__right__left::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        scene_right_0:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+        wrist_left_plus:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+        wrist_right_minus:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+    shuffle: true
+    shuffle_buffer_size: 50000
+    tokenizer:
+      _target_: diffusion_policy.dataset.spartan_image_language_dataset.AutoTokenizer
+      max_length: 77
+      name: openai/clip-vit-base-patch32
+      padding: max_length
+      truncate: true
+  dataset_fraction: null
+  index_filename: filenames_version.txt
+  name: stage_0_BimanualPlaceAppleFromBowlOnCuttingBoard_v1.2
+  shape_meta:
+    action:
+      shape:
+      - 20
+    obs:
+      robot__actual__grippers__left::panda_hand:
+        shape:
+        - 1
+        type: low_dim
+      robot__actual__grippers__right::panda_hand:
+        shape:
+        - 1
+        type: low_dim
+      robot__actual__poses__left::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__left::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      robot__actual__poses__left__right::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__left__right::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      robot__actual__poses__right::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__right::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      robot__actual__poses__right__left::panda__rot_6d:
+        shape:
+        - 6
+        type: low_dim
+      robot__actual__poses__right__left::panda__xyz:
+        shape:
+        - 3
+        type: low_dim
+      scene_right_0:
+        shape:
+        - 3
+        - 256
+        - 342
+        type: rgb
+      wrist_left_plus:
+        shape:
+        - 3
+        - 256
+        - 342
+        type: rgb
+      wrist_right_minus:
+        shape:
+        - 3
+        - 256
+        - 342
+        type: rgb
+  skill_name: BimanualPlaceAppleFromBowlOnCuttingBoard
+  task_name: stage_0_BimanualPlaceAppleFromBowlOnCuttingBoard_v1.2
+  val_dataset:
+    _target_: diffusion_policy.datapipe.builder.build_datapipe_from_dict
+    aws_region: us-west-2
+    batch_size: 40
+    clip_inference_normalizer_output: true
+    horizon: 16
+    indices_dicts:
+      single_skill:
+        clipping: true
+        indices:
+        - s3://robotics-manip-lbm/webdataset/format-v1.2/indices_fov/sim/riverway/BimanualPlaceAppleFromBowlOnCuttingBoard/*/filenames_version.txt
+        stats: s3://robotics-manip-lbm/webdataset/format-v1.2/datasets/lbm-v1.0/lbm/sim-and-real/train/normalizer-stats/relative/normalizer_stats.pkl
+        weight: 1.0
+    inference_normalizer_stats_path: s3://robotics-manip-lbm/webdataset/format-v1.2/datasets/lbm-v1.0/lbm/sim-and-real/train/normalizer-stats/relative/normalizer_stats.pkl
+    is_relative: true
+    language_augmentation: true
+    n_obs_steps: 2
+    shape_meta:
+      action:
+        shape:
+        - 20
+      obs:
+        robot__actual__grippers__left::panda_hand:
+          shape:
+          - 1
+          type: low_dim
+        robot__actual__grippers__right::panda_hand:
+          shape:
+          - 1
+          type: low_dim
+        robot__actual__poses__left::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__left::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__left__right::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__left__right::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__right::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__right::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        robot__actual__poses__right__left::panda__rot_6d:
+          shape:
+          - 6
+          type: low_dim
+        robot__actual__poses__right__left::panda__xyz:
+          shape:
+          - 3
+          type: low_dim
+        scene_right_0:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+        wrist_left_plus:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+        wrist_right_minus:
+          shape:
+          - 3
+          - 256
+          - 342
+          type: rgb
+    shuffle: false
+    tokenizer:
+      _target_: diffusion_policy.dataset.spartan_image_language_dataset.AutoTokenizer
+      max_length: 77
+      name: openai/clip-vit-base-patch32
+      padding: max_length
+      truncate: true
+task_name: stage_0_BimanualPlaceAppleFromBowlOnCuttingBoard_v1.2
+tokenizer:
+  _target_: diffusion_policy.dataset.spartan_image_language_dataset.AutoTokenizer
+  max_length: 77
+  name: openai/clip-vit-base-patch32
+  padding: max_length
+  truncate: true
+training:
+  checkpoint_every: 50
+  debug: false
+  device: -1
+  freeze_encoder: false
+  gradient_accumulate_every: 1
+  lr_scale_for_grouped_params:
+    obs_encoder: 0.1
+  lr_scheduler: constant
+  lr_step_interval: step
+  lr_total_steps: 25000
+  lr_warmup_steps: 1000
+  max_train_steps: null
+  max_val_steps: null
+  num_epochs: 500
+  num_nodes: 1
+  num_sanity_val_steps: 2
+  num_steps: 25000
+  output_dir: /opt/ml/output/data
+  periodic_save: 100
+  rollout_every: 50
+  sample_every: 5
+  seed: 42
+  strategy: ddp
+  tqdm_interval_sec: 1.0
+  train_with_features: false
+  use_ema: true
+  val_every: 50000000000000000
+  val_per_step: true
+val_dataloader:
+  batch_size: 24
+  num_workers: 5
+  persistent_workers: true
+  pin_memory: true
+  shuffle: false

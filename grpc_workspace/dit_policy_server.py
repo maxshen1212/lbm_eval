@@ -52,7 +52,7 @@ import yaml
 from pydrake.math import RotationMatrix
 
 from lerobot.policies.factory import make_pre_post_processors
-from lerobot.policies.multi_task_dit.modeling_multi_task_dit_original import (
+from lerobot.policies.multi_task_dit.modeling_multi_task_dit import (
     MultiTaskDiTPolicy,
 )
 import lerobot.policies.pretrained as _lerobot_pretrained
